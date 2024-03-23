@@ -6,21 +6,37 @@
 //
 
 import SwiftUI
-
-enum Emoji: String {
-    case 💩
-}
+import MapKit
 
 struct ContentView: View {
-    var selection = Emoji.💩
+    @StateObject private var viewModel = ContentViewModel()
     
     var body: some View {
+        Map(coordinateRegion: $viewModel.region, showsUserLocation: true)
+            .ignoresSafeArea()
+            .accentColor(Color(.systemPink))
+            .onAppear{
+                viewModel.checkIfLocationServiceIsEnabled()
+            }
+    }
+}
 
-        Text(selection.rawValue)
-            .font(.system(size: 150))
+extension CLLocationCoordinate2D{
+    static var userLocation: CLLocationCoordinate2D{
+        return .init(latitude: 25.7602, longitude: -80.1959)
+    }
+}
+
+extension MKCoordinateRegion {
+    static var userRegion: MKCoordinateRegion {
+        return .init(center: .userLocation,
+                     latitudinalMeters: 10000,
+                     longitudinalMeters: 10000)
     }
 }
 
 #Preview {
     ContentView()
 }
+
+
