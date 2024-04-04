@@ -7,6 +7,7 @@ struct LoginView: View {
 
     var body: some View {
         VStack {
+            Text("Login")
             TextField("Email", text: $email)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
@@ -43,7 +44,6 @@ struct LoginView: View {
         request.httpBody = jsonData
         
         print(request)
-        print(request.httpBody)
         print("myRequest")
         
         URLSession.shared.dataTask(with: request) { data, response, error in
