@@ -10,14 +10,28 @@ import MapKit
 
 struct ContentView: View {
     @StateObject private var viewModel = ContentViewModel()
+    @State private var isShowingLogin = false
     
     var body: some View {
-        Map(coordinateRegion: $viewModel.region, showsUserLocation: true)
-            .ignoresSafeArea()
-            .accentColor(Color(.systemPink))
-            .onAppear{
-                viewModel.checkIfLocationServiceIsEnabled()
-            }
+        NavigationView {
+            VStack {
+                Map(coordinateRegion: $viewModel.region, showsUserLocation: true)
+                    .ignoresSafeArea()
+                    .accentColor(Color(.systemPink))
+                    .onAppear{
+                        viewModel.checkIfLocationServiceIsEnabled()
+                    }
+                Spacer()
+                Button("Show Login") {
+                                    isShowingLogin = true
+                                }
+                                .padding()
+            }.navigationBarTitle("Map")
+            
+        } .sheet(isPresented: $isShowingLogin) {
+            LoginView()
+        }
+        
     }
 }
 
