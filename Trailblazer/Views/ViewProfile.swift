@@ -104,6 +104,24 @@ struct ViewProfile: View {
                 Spacer() // Push the content to the top
                 
             }
+            HStack {
+                            Spacer() // Push the button to the right
+                            
+                            Button(action: {
+                                // Action for the button
+                            }) {
+                                Image(systemName: "plus")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .foregroundColor(.white)
+                                    .frame(width: 30, height: 30) // Adjust the size of the button
+                                    .padding(15) // Adjust the padding of the button
+                                    .background(Color.blue)
+                                    .clipShape(Circle())
+                            }
+                            .padding(.trailing, 20) // Add padding to the right of the button
+                            .padding(.bottom, 100) // Add padding to the bottom of the button
+                        }
         }
         .background(Color.white)
         .edgesIgnoringSafeArea(.all)
