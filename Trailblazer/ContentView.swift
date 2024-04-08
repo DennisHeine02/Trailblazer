@@ -8,33 +8,6 @@
 import SwiftUI
 import MapKit
 
-//struct ContentView: View {
-//    @StateObject private var viewModel = ContentViewModel()
-//    @State private var isShowingLogin = false
-//    
-//    var body: some View {
-//        NavigationView {
-//            VStack {
-//                Map(coordinateRegion: $viewModel.region, showsUserLocation: true)
-//                    .ignoresSafeArea()
-//                    .accentColor(Color(.systemPink))
-//                    .onAppear{
-//                        viewModel.checkIfLocationServiceIsEnabled()
-//                    }
-//                Spacer()
-//                Button("Show Login") {
-//                                    isShowingLogin = true
-//                                }
-//                                .padding()
-//            }.navigationBarTitle("Map")
-//            
-//        } .sheet(isPresented: $isShowingLogin) {
-//            LoginView()
-//        }
-//        
-//    }
-//}
-
 struct ContentView: View {
     var body: some View {
         TabView {
@@ -65,5 +38,7 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
+
+
 
 

@@ -1,21 +1,23 @@
-//
-//  ViewMap.swift
-//  Trailblazer
-//
-//  Created by Dennis Heine on 04.04.24.
-//
-
 import SwiftUI
 
 struct ViewSettings : View {
+    @Environment(\.colorScheme) var colorScheme
+    @State private var isDarkModeEnabled = false
+
     var body: some View {
-        ZStack {
-            Color.blue
+        VStack {
+            Toggle(isOn: $isDarkModeEnabled) {
+                Text("Dark Mode")
+            }
+            .padding()
+
         }
+        .preferredColorScheme(isDarkModeEnabled ? .dark : .light)
     }
 }
+
 struct ViewSettings_Previews: PreviewProvider {
     static var previews: some View {
-        ViewMap()
+        ViewSettings()
     }
 }
