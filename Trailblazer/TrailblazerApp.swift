@@ -11,7 +11,9 @@ import SwiftUI
 struct TrailblazerApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationView{
+                LoginView()
+            }.navigationBarHidden(true)
         }
     }
 }

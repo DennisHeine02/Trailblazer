@@ -8,7 +8,7 @@
 import SwiftUI
 import MapKit
 
-struct ViewMapLukas: View {
+struct ViewMapNew: View {
     
     @StateObject private var mapVM = MapViewModel()
     @State private var isShowingLogin = false
@@ -28,18 +28,13 @@ struct ViewMapLukas: View {
                 }
                 Spacer()
                 
-                Button("Show Login") {
-                    isShowingLogin = true
-                }
-                
-                .padding()
             }
         }
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct ViewMapNew_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ViewMapNew()
     }
 }

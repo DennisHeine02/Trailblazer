@@ -18,7 +18,7 @@ struct ViewSettings : View {
             }
             HStack(alignment: .center){
                 Text("Map Style")
-                    .padding(.bottom, 580.0) // Text before the picker
+                    .padding(.bottom, 530.0) // Text before the picker
                 
                 Form {
                     Picker("", selection: $mapType) { // Empty string for the label

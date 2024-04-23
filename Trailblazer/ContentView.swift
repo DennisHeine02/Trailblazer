@@ -11,7 +11,7 @@ import MapKit
 struct ContentView: View {
     var body: some View {
         TabView {
-            ViewMapLukas()
+            ViewMapNew()
                 .tabItem {
                     Image(systemName: "map")
                     Text("Map")
@@ -32,6 +32,7 @@ struct ContentView: View {
                     Text("Settings")
                 }
         }.edgesIgnoringSafeArea(.all)
+         .navigationBarHidden(true)
     }
 }
 

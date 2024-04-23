@@ -1,5 +1,5 @@
 //
-//  ViewMap.swift
+//  ViewMapOld.swift
 //  Trailblazer
 //
 //  Created by Dennis Heine on 04.04.24.
@@ -8,7 +8,7 @@
 import SwiftUI
 import MapKit
 
-struct ViewMap: View {
+struct ViewMapOld: View {
     @StateObject private var viewModel = ContentViewModel()
     @State private var isShowingLogin = false
 
@@ -41,9 +41,9 @@ struct ViewMap: View {
         }
     }
 }
-struct ViewMap_Previews: PreviewProvider {
+struct ViewMapOld_Previews: PreviewProvider {
     static var previews: some View {
-        ViewMap()
+        ViewMapOld()
     }
 }
 
