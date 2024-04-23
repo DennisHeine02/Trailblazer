@@ -8,31 +8,38 @@
 import SwiftUI
 import MapKit
 
-struct ViewMap : View {
-        @StateObject private var viewModel = ContentViewModel()
-        @State private var isShowingLogin = false
-    
-        var body: some View {
-            NavigationView {
+struct ViewMap: View {
+    @StateObject private var viewModel = ContentViewModel()
+    @State private var isShowingLogin = false
+
+    var body: some View {
+        NavigationView {
+            ZStack {
+                Map(coordinateRegion: $viewModel.region, showsUserLocation: true)
+                    .ignoresSafeArea()
+                    .accentColor(Color(.systemPink))
+                    .onAppear {
+                        viewModel.checkIfLocationServiceIsEnabled()
+                    }
+
                 VStack {
-                    Map(coordinateRegion: $viewModel.region, showsUserLocation: true)
-                        .ignoresSafeArea()
-                        .accentColor(Color(.systemPink))
-                        .onAppear{
-                            viewModel.checkIfLocationServiceIsEnabled()
-                        }
+                    ProgressBar(width: 200, height: 20, percent: 69, color1: Color(.red), color2: Color(.orange))
+                    
                     Spacer()
+
                     Button("Show Login") {
-                                        isShowingLogin = true
-                                    }
-                                    .padding()
-                }.navigationBarTitle("Map")
-    
-            } .sheet(isPresented: $isShowingLogin) {
-                LoginView()
+                        isShowingLogin = true
+                    }
+                     
+                    .padding()
+                }
             }
-    
+            .navigationBarTitle("Map")
         }
+        .sheet(isPresented: $isShowingLogin) {
+            LoginView()
+        }
+    }
 }
 struct ViewMap_Previews: PreviewProvider {
     static var previews: some View {

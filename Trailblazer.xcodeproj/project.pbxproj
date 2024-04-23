@@ -13,6 +13,11 @@
 		CD04FCC22BBF52B100041725 /* ViewProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04FCC12BBF52B100041725 /* ViewProfile.swift */; };
 		CD04FCC42BBF52BF00041725 /* ViewSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04FCC32BBF52BF00041725 /* ViewSettings.swift */; };
 		CD04FCC62BBFE4DE00041725 /* Präsentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04FCC52BBFE4DE00041725 /* Präsentation.swift */; };
+		CD04FCC92BCEB18900041725 /* MKMapRep.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04FCC82BCEB18900041725 /* MKMapRep.swift */; };
+		CD04FCCB2BCEB1DD00041725 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04FCCA2BCEB1DD00041725 /* MapViewModel.swift */; };
+		CD04FCCD2BCEB26E00041725 /* ViewMapLukas.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04FCCC2BCEB26E00041725 /* ViewMapLukas.swift */; };
+		CD8530DD2BD7D67F00FCE522 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8530DC2BD7D67F00FCE522 /* ProgressBar.swift */; };
+		CD8530E12BD8282000FCE522 /* SharedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8530E02BD8282000FCE522 /* SharedData.swift */; };
 		CDA7CC982BA9039A00078822 /* TrailblazerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA7CC972BA9039A00078822 /* TrailblazerApp.swift */; };
 		CDA7CC9A2BA9039A00078822 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA7CC992BA9039A00078822 /* ContentView.swift */; };
 		CDA7CC9C2BA9039B00078822 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDA7CC9B2BA9039B00078822 /* Assets.xcassets */; };
@@ -27,6 +32,11 @@
 		CD04FCC12BBF52B100041725 /* ViewProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewProfile.swift; sourceTree = "<group>"; };
 		CD04FCC32BBF52BF00041725 /* ViewSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewSettings.swift; sourceTree = "<group>"; };
 		CD04FCC52BBFE4DE00041725 /* Präsentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Präsentation.swift"; sourceTree = "<group>"; };
+		CD04FCC82BCEB18900041725 /* MKMapRep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKMapRep.swift; sourceTree = "<group>"; };
+		CD04FCCA2BCEB1DD00041725 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
+		CD04FCCC2BCEB26E00041725 /* ViewMapLukas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMapLukas.swift; sourceTree = "<group>"; };
+		CD8530DC2BD7D67F00FCE522 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
+		CD8530E02BD8282000FCE522 /* SharedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedData.swift; sourceTree = "<group>"; };
 		CDA7CC942BA9039A00078822 /* Trailblazer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Trailblazer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDA7CC972BA9039A00078822 /* TrailblazerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailblazerApp.swift; sourceTree = "<group>"; };
 		CDA7CC992BA9039A00078822 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -50,11 +60,21 @@
 			isa = PBXGroup;
 			children = (
 				CD04FCBD2BBF526100041725 /* ViewMap.swift */,
+				CD04FCCC2BCEB26E00041725 /* ViewMapLukas.swift */,
 				CD04FCBF2BBF528D00041725 /* ViewStats.swift */,
 				CD04FCC12BBF52B100041725 /* ViewProfile.swift */,
 				CD04FCC32BBF52BF00041725 /* ViewSettings.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		CD04FCC72BCEB17000041725 /* MapKit */ = {
+			isa = PBXGroup;
+			children = (
+				CD04FCC82BCEB18900041725 /* MKMapRep.swift */,
+				CD04FCCA2BCEB1DD00041725 /* MapViewModel.swift */,
+			);
+			path = MapKit;
 			sourceTree = "<group>";
 		};
 		CDA7CC8B2BA9039A00078822 = {
@@ -76,14 +96,17 @@
 		CDA7CC962BA9039A00078822 /* Trailblazer */ = {
 			isa = PBXGroup;
 			children = (
+				CD04FCC72BCEB17000041725 /* MapKit */,
 				CDA7CC972BA9039A00078822 /* TrailblazerApp.swift */,
 				CDA7CC992BA9039A00078822 /* ContentView.swift */,
+				CD8530DC2BD7D67F00FCE522 /* ProgressBar.swift */,
 				CDA7CC9B2BA9039B00078822 /* Assets.xcassets */,
 				CDA7CC9D2BA9039B00078822 /* Preview Content */,
 				CDD2EFD82BAA3908008D9422 /* ContenViewModel.swift */,
 				CD04FCBC2BBF523900041725 /* Views */,
 				CD04FCBA2BBEC1B200041725 /* LoginView.swift */,
 				CD04FCC52BBFE4DE00041725 /* Präsentation.swift */,
+				CD8530E02BD8282000FCE522 /* SharedData.swift */,
 			);
 			path = Trailblazer;
 			sourceTree = "<group>";
@@ -168,11 +191,16 @@
 			files = (
 				CDD2EFD92BAA3908008D9422 /* ContenViewModel.swift in Sources */,
 				CD04FCC42BBF52BF00041725 /* ViewSettings.swift in Sources */,
+				CD04FCCD2BCEB26E00041725 /* ViewMapLukas.swift in Sources */,
 				CDA7CC9A2BA9039A00078822 /* ContentView.swift in Sources */,
 				CD04FCBB2BBEC1B200041725 /* LoginView.swift in Sources */,
 				CD04FCBE2BBF526100041725 /* ViewMap.swift in Sources */,
 				CD04FCC02BBF528D00041725 /* ViewStats.swift in Sources */,
+				CD04FCCB2BCEB1DD00041725 /* MapViewModel.swift in Sources */,
+				CD8530E12BD8282000FCE522 /* SharedData.swift in Sources */,
+				CD04FCC92BCEB18900041725 /* MKMapRep.swift in Sources */,
 				CD04FCC62BBFE4DE00041725 /* Präsentation.swift in Sources */,
+				CD8530DD2BD7D67F00FCE522 /* ProgressBar.swift in Sources */,
 				CD04FCC22BBF52B100041725 /* ViewProfile.swift in Sources */,
 				CDA7CC982BA9039A00078822 /* TrailblazerApp.swift in Sources */,
 			);

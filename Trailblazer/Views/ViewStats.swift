@@ -85,12 +85,19 @@ struct BundeslandListView: View {
                 }
             }
             Divider()
-            HStack {
+            VStack {
                 Text("Deutschland")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                Spacer()
-                Text(String(format: "%.2f%%", totalPercentage))
-                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .font(.title)
+                
+                var percent : CGFloat = 31
+                
+                HStack{
+                    ProgressBar(width: 200, height: 20, percent: percent, color1: Color(.red), color2: Color(.orange))
+                    
+                    Text("\(Int(percent))%")
+                        .font(.system(size: 30, weight: .bold))
+                }
             }
         }
         .padding()
