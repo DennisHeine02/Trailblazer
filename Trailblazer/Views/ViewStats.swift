@@ -73,18 +73,6 @@ struct BundeslandListView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Bundesland Stats")
-                .font(.headline)
-            ForEach(bundeslandStats, id: \.0) { bundesland in
-                HStack {
-                    Text(bundesland.0)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    Spacer()
-                    Text(String(format: "%.2f%%", bundesland.1))
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                }
-            }
-            Divider()
             VStack {
                 Text("Deutschland")
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -93,10 +81,29 @@ struct BundeslandListView: View {
                 var percent : CGFloat = 31
                 
                 HStack{
-                    ProgressBar(width: 200, height: 20, percent: percent, color1: Color(.red), color2: Color(.orange))
+                    ProgressBar(width: 250, height: 25, percent: percent, color1: Color(.red), color2: Color(.orange))
                     
                     Text("\(Int(percent))%")
                         .font(.system(size: 30, weight: .bold))
+                }
+            }
+            Divider()
+            Text("Bundesländer")
+                .frame(maxWidth: .infinity, alignment: .center)
+                .font(.headline)
+            List {
+                ForEach(bundeslandStats, id: \.0) { bundesland in
+                    VStack {
+                        Text(bundesland.0)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        HStack{
+                            ProgressBar(width: 200, height: 25, percent: 10, color1: Color(.red), color2: Color(.orange))
+                            
+                            Text("\(Int(10))%")
+                                .font(.system(size: 15, weight: .bold))
+                        }
+                    }
                 }
             }
         }

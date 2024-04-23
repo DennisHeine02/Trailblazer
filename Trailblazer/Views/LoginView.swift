@@ -11,6 +11,12 @@ struct LoginView: View {
 
     var body: some View {
         VStack {
+            Image("TrailBlazerIcon")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 100, height: 100)
+                .padding(.bottom, 50)
+            
             Text("Login")
             
             TextField("Email", text: $email)
