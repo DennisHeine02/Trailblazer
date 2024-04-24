@@ -13,11 +13,19 @@ struct ViewMapNew: View {
     @StateObject private var mapVM = MapViewModel()
     @State private var isShowingLogin = false
     @State var percent : CGFloat = 31
-    @State public var mapType: MKMapType = .standard // Define a default map type {standard, satellite or hybrid}
+//    @State public var mapType: MKMapType = .standard // Define a default map type {standard, satellite or hybrid}
+    @ObservedObject var mapTypeSettings: MapTypeSettings
     
+    var mapTypeBinding: Binding<MKMapType> {
+            Binding<MKMapType>(
+                get: { self.mapTypeSettings.mapType },
+                set: { self.mapTypeSettings.mapType = $0 }
+            )
+        }
+
     var body: some View {
         ZStack {
-            MKMapRep(mapVM: mapVM, mapType: $mapType)
+            MKMapRep(mapVM: mapVM, mapType: mapTypeBinding)
             Spacer()
             VStack {
                 HStack{
@@ -35,6 +43,7 @@ struct ViewMapNew: View {
 
 struct ViewMapNew_Previews: PreviewProvider {
     static var previews: some View {
-        ViewMapNew()
+        let mapTypeSettings = MapTypeSettings()
+        ViewMapNew(mapTypeSettings: mapTypeSettings)
     }
 }

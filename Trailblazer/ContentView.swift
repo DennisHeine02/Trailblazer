@@ -10,9 +10,11 @@ import MapKit
 
 struct ContentView: View {
     
+    @StateObject var mapTypeSettings = MapTypeSettings()
+    
     var body: some View {
         TabView {
-            ViewMapNew()
+            ViewMapNew(mapTypeSettings: mapTypeSettings)
                 .tabItem {
                     Image(systemName: "map")
                     Text("Map")
@@ -27,7 +29,7 @@ struct ContentView: View {
                     Image(systemName: "person")
                     Text("Profile")
                 }
-            ViewSettings()
+            ViewSettings(mapTypeSettings: mapTypeSettings)
                 .tabItem {
                     Image(systemName: "gear")
                     Text("Settings")
