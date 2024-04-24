@@ -3,7 +3,7 @@ import SwiftUI
 struct ViewSettings : View {
     @Environment(\.colorScheme) var colorScheme
     @State private var isDarkModeEnabled = false
-    @State private var mapType: MapType = .standard // Initial map type
+    @State public var mapType: MapType = .standard // Initial map type
     
     enum MapType: String, CaseIterable {
         case standard = "Standard"

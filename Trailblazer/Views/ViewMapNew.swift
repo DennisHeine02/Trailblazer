@@ -13,7 +13,7 @@ struct ViewMapNew: View {
     @StateObject private var mapVM = MapViewModel()
     @State private var isShowingLogin = false
     @State var percent : CGFloat = 31
-    @State private var mapType: MKMapType = .satellite // Define a default map type {standard, satellite or hybrid}
+    @State public var mapType: MKMapType = .standard // Define a default map type {standard, satellite or hybrid}
     
     var body: some View {
         ZStack {
