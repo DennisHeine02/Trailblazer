@@ -74,7 +74,7 @@ struct ViewProfile: View {
                             }
                             
                             Button(action: {
-                                // Action for "Logout"
+                                logout()
                             }) {
                                 Text("Logout")
                                     .frame(maxWidth: .infinity, maxHeight: 50)
@@ -124,15 +124,20 @@ struct ViewProfile: View {
                                         .font(.system(size: 10, weight: .bold))
                                 }
                             }
-                            Image(systemName: "trash")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundColor(.red)
-                                .frame(width: 15, height: 20) // Adjust the size of the button
-                                .padding(15) // Adjust the padding of the button
-                                .background(myColor)
-                                .clipShape(Circle())
-                                .padding(.leading, 30)
+                            Button(action: {
+                                delete(friend)
+                            }) {
+                                Image(systemName: "trash")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .foregroundColor(.red)
+                                    .frame(width: 15, height: 20) // Adjust the size of the button
+                                    .padding(15) // Adjust the padding of the button
+                                    .background(myColor)
+                                    .clipShape(Circle())
+                            }
+                            .padding(.leading, 30)
+                            
                             Spacer()
                         }
                         .padding(.vertical, 8)
@@ -168,6 +173,16 @@ struct ViewProfile: View {
         }
         .edgesIgnoringSafeArea(.all)
     }
+    
+    func logout() {
+        
+    }
+    
+    func delete(_ friend: Friend) {
+            if let index = friends.firstIndex(where: { $0.id == friend.id }) {
+                friends.remove(at: index)
+            }
+        }
 }
 
 struct ViewProfile_Previews: PreviewProvider {
