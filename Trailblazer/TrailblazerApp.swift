@@ -9,10 +9,12 @@ import SwiftUI
 
 @main
 struct TrailblazerApp: App {
+    
+    @StateObject var authentification = AuthentificationToken()
     var body: some Scene {
         WindowGroup {
             NavigationView{
-                LoginView(authentification: AuthentificationToken())
+                LoginView(authentification: authentification)
             }.navigationBarHidden(true)
         }
     }

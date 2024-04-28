@@ -11,10 +11,11 @@ import MapKit
 struct ContentView: View {
     
     @StateObject var mapTypeSettings = MapTypeSettings()
+    @ObservedObject var authentification: AuthentificationToken
     
     var body: some View {
         TabView {
-            ViewMapNew(mapTypeSettings: mapTypeSettings, authentification: AuthentificationToken())
+            ViewMapNew(mapTypeSettings: mapTypeSettings, authentification: authentification)
                 .tabItem {
                     Image(systemName: "map")
                     Text("Map")
@@ -40,7 +41,7 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    ContentView(authentification: AuthentificationToken())
 }
 
 
