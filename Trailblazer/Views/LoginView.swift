@@ -46,7 +46,7 @@ struct LoginView: View {
                 Alert(title: Text("Error"), message: Text("Invalid credentials"), dismissButton: .default(Text("OK")))
             }
             
-            NavigationLink(destination: ContentView(), isActive: $isLoggedIn) {
+            NavigationLink(destination: ContentView(authentification: authentification), isActive: $isLoggedIn) {
                                 EmptyView()
                             }
                             .hidden()
