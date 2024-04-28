@@ -9,34 +9,40 @@ import SwiftUI
 import MapKit
 
 struct ContentView: View {
-    @StateObject private var viewModel = ContentViewModel()
+    
+    @StateObject var mapTypeSettings = MapTypeSettings()
     
     var body: some View {
-        Map(coordinateRegion: $viewModel.region, showsUserLocation: true)
-            .ignoresSafeArea()
-            .accentColor(Color(.systemPink))
-            .onAppear{
-                viewModel.checkIfLocationServiceIsEnabled()
-            }
-    }
-}
-
-extension CLLocationCoordinate2D{
-    static var userLocation: CLLocationCoordinate2D{
-        return .init(latitude: 25.7602, longitude: -80.1959)
-    }
-}
-
-extension MKCoordinateRegion {
-    static var userRegion: MKCoordinateRegion {
-        return .init(center: .userLocation,
-                     latitudinalMeters: 10000,
-                     longitudinalMeters: 10000)
+        TabView {
+            ViewMapNew(mapTypeSettings: mapTypeSettings, authentification: AuthentificationToken())
+                .tabItem {
+                    Image(systemName: "map")
+                    Text("Map")
+                }
+            ViewStats()
+                .tabItem {
+                    Image(systemName: "list.bullet")
+                    Text("Stats")
+                }
+            ViewProfile()
+                .tabItem {
+                    Image(systemName: "person")
+                    Text("Profile")
+                }
+            ViewSettings(mapTypeSettings: mapTypeSettings)
+                .tabItem {
+                    Image(systemName: "gear")
+                    Text("Settings")
+                }
+        }.edgesIgnoringSafeArea(.all)
+         .navigationBarHidden(true)
     }
 }
 
 #Preview {
     ContentView()
 }
+
+
 
 

@@ -7,6 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0AF7CF582BDC1375004A60D0 /* AuthentificationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF7CF572BDC1375004A60D0 /* AuthentificationToken.swift */; };
+		CD04FCBB2BBEC1B200041725 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04FCBA2BBEC1B200041725 /* LoginView.swift */; };
+		CD04FCC02BBF528D00041725 /* ViewStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04FCBF2BBF528D00041725 /* ViewStats.swift */; };
+		CD04FCC22BBF52B100041725 /* ViewProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04FCC12BBF52B100041725 /* ViewProfile.swift */; };
+		CD04FCC42BBF52BF00041725 /* ViewSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04FCC32BBF52BF00041725 /* ViewSettings.swift */; };
+		CD04FCC62BBFE4DE00041725 /* Präsentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04FCC52BBFE4DE00041725 /* Präsentation.swift */; };
+		CD04FCC92BCEB18900041725 /* MKMapRep.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04FCC82BCEB18900041725 /* MKMapRep.swift */; };
+		CD04FCCB2BCEB1DD00041725 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04FCCA2BCEB1DD00041725 /* MapViewModel.swift */; };
+		CD6D8B162BD8393C00675366 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6D8B152BD8393C00675366 /* RegisterView.swift */; };
+		CD8530DD2BD7D67F00FCE522 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8530DC2BD7D67F00FCE522 /* ProgressBar.swift */; };
+		CD8760812BD83E4000F51B31 /* ViewMapOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD87607F2BD83E4000F51B31 /* ViewMapOld.swift */; };
+		CD8760822BD83E4000F51B31 /* ViewMapNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8760802BD83E4000F51B31 /* ViewMapNew.swift */; };
+		CD8760872BD92AC600F51B31 /* MapTypeSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8760862BD92AC600F51B31 /* MapTypeSettings.swift */; };
 		CDA7CC982BA9039A00078822 /* TrailblazerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA7CC972BA9039A00078822 /* TrailblazerApp.swift */; };
 		CDA7CC9A2BA9039A00078822 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA7CC992BA9039A00078822 /* ContentView.swift */; };
 		CDA7CC9C2BA9039B00078822 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDA7CC9B2BA9039B00078822 /* Assets.xcassets */; };
@@ -15,6 +28,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0AF7CF572BDC1375004A60D0 /* AuthentificationToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthentificationToken.swift; sourceTree = "<group>"; };
+		CD04FCBA2BBEC1B200041725 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		CD04FCBF2BBF528D00041725 /* ViewStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewStats.swift; sourceTree = "<group>"; };
+		CD04FCC12BBF52B100041725 /* ViewProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewProfile.swift; sourceTree = "<group>"; };
+		CD04FCC32BBF52BF00041725 /* ViewSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewSettings.swift; sourceTree = "<group>"; };
+		CD04FCC52BBFE4DE00041725 /* Präsentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Präsentation.swift"; sourceTree = "<group>"; };
+		CD04FCC82BCEB18900041725 /* MKMapRep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKMapRep.swift; sourceTree = "<group>"; };
+		CD04FCCA2BCEB1DD00041725 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
+		CD6D8B152BD8393C00675366 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		CD8530DC2BD7D67F00FCE522 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
+		CD87607F2BD83E4000F51B31 /* ViewMapOld.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewMapOld.swift; sourceTree = "<group>"; };
+		CD8760802BD83E4000F51B31 /* ViewMapNew.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewMapNew.swift; sourceTree = "<group>"; };
+		CD8760862BD92AC600F51B31 /* MapTypeSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTypeSettings.swift; sourceTree = "<group>"; };
 		CDA7CC942BA9039A00078822 /* Trailblazer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Trailblazer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDA7CC972BA9039A00078822 /* TrailblazerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailblazerApp.swift; sourceTree = "<group>"; };
 		CDA7CC992BA9039A00078822 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -34,6 +60,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CD04FCBC2BBF523900041725 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CD04FCBA2BBEC1B200041725 /* LoginView.swift */,
+				CD6D8B152BD8393C00675366 /* RegisterView.swift */,
+				CD8760802BD83E4000F51B31 /* ViewMapNew.swift */,
+				CD04FCBF2BBF528D00041725 /* ViewStats.swift */,
+				CD04FCC12BBF52B100041725 /* ViewProfile.swift */,
+				CD04FCC32BBF52BF00041725 /* ViewSettings.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		CD04FCC72BCEB17000041725 /* MapKit */ = {
+			isa = PBXGroup;
+			children = (
+				CD04FCC82BCEB18900041725 /* MKMapRep.swift */,
+				CD04FCCA2BCEB1DD00041725 /* MapViewModel.swift */,
+			);
+			path = MapKit;
+			sourceTree = "<group>";
+		};
+		CD8760832BD83EF200F51B31 /* trash */ = {
+			isa = PBXGroup;
+			children = (
+				CD87607F2BD83E4000F51B31 /* ViewMapOld.swift */,
+				CDD2EFD82BAA3908008D9422 /* ContenViewModel.swift */,
+				CD04FCC52BBFE4DE00041725 /* Präsentation.swift */,
+				CDA7CC9D2BA9039B00078822 /* Preview Content */,
+			);
+			path = trash;
+			sourceTree = "<group>";
+		};
 		CDA7CC8B2BA9039A00078822 = {
 			isa = PBXGroup;
 			children = (
@@ -53,11 +112,15 @@
 		CDA7CC962BA9039A00078822 /* Trailblazer */ = {
 			isa = PBXGroup;
 			children = (
+				CD8760832BD83EF200F51B31 /* trash */,
+				CD04FCC72BCEB17000041725 /* MapKit */,
 				CDA7CC972BA9039A00078822 /* TrailblazerApp.swift */,
 				CDA7CC992BA9039A00078822 /* ContentView.swift */,
 				CDA7CC9B2BA9039B00078822 /* Assets.xcassets */,
-				CDA7CC9D2BA9039B00078822 /* Preview Content */,
-				CDD2EFD82BAA3908008D9422 /* ContenViewModel.swift */,
+				CD04FCBC2BBF523900041725 /* Views */,
+				CD8530DC2BD7D67F00FCE522 /* ProgressBar.swift */,
+				CD8760862BD92AC600F51B31 /* MapTypeSettings.swift */,
+				0AF7CF572BDC1375004A60D0 /* AuthentificationToken.swift */,
 			);
 			path = Trailblazer;
 			sourceTree = "<group>";
@@ -141,7 +204,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				CDD2EFD92BAA3908008D9422 /* ContenViewModel.swift in Sources */,
+				CD04FCC42BBF52BF00041725 /* ViewSettings.swift in Sources */,
+				CD6D8B162BD8393C00675366 /* RegisterView.swift in Sources */,
+				CD8760872BD92AC600F51B31 /* MapTypeSettings.swift in Sources */,
 				CDA7CC9A2BA9039A00078822 /* ContentView.swift in Sources */,
+				0AF7CF582BDC1375004A60D0 /* AuthentificationToken.swift in Sources */,
+				CD04FCBB2BBEC1B200041725 /* LoginView.swift in Sources */,
+				CD04FCC02BBF528D00041725 /* ViewStats.swift in Sources */,
+				CD04FCCB2BCEB1DD00041725 /* MapViewModel.swift in Sources */,
+				CD04FCC92BCEB18900041725 /* MKMapRep.swift in Sources */,
+				CD04FCC62BBFE4DE00041725 /* Präsentation.swift in Sources */,
+				CD8530DD2BD7D67F00FCE522 /* ProgressBar.swift in Sources */,
+				CD04FCC22BBF52B100041725 /* ViewProfile.swift in Sources */,
+				CD8760812BD83E4000F51B31 /* ViewMapOld.swift in Sources */,
+				CD8760822BD83E4000F51B31 /* ViewMapNew.swift in Sources */,
 				CDA7CC982BA9039A00078822 /* TrailblazerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -275,9 +351,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Trailblazer/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Trailblazer/trash/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Trailblazer/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Need Location to show on Map";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -304,9 +383,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Trailblazer/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Trailblazer/trash/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Trailblazer/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Need Location to show on Map";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
