@@ -26,7 +26,7 @@ extension MapViewModel: MKMapViewDelegate {
         if overlay is MKPolygon {
             let boundPolygon = MKPolygonRenderer(overlay: overlay)
             //boundPolygon.strokeColor = UIColor.orange
-            boundPolygon.fillColor = UIColor.orange.withAlphaComponent(0.25)
+            boundPolygon.fillColor = UIColor.orange.withAlphaComponent(0.5)
             
             return boundPolygon
         }

@@ -12,15 +12,13 @@ import MapKit
 struct MKMapRep: UIViewRepresentable {
     
     @ObservedObject var mapVM: MapViewModel
-    
     @Binding var mapType: MKMapType
+    @ObservedObject var authentification: AuthentificationToken
+    let latitude: String = "48.440194182762376"
+    let longitude: String = "8.67894607854444"
+    let zoomLevel: String = "14"
     
-    let coordsForHole = [
-        CLLocationCoordinate2D(latitude: 48.354450, longitude: 8.941511),
-        CLLocationCoordinate2D(latitude: 48.354450, longitude: 8.980349),
-        CLLocationCoordinate2D(latitude: 48.331459, longitude: 8.980349),
-        CLLocationCoordinate2D(latitude: 48.331459, longitude: 8.941511)
-    ]
+    
     
     let germany = [
         CLLocationCoordinate2D(latitude: 55.0846, longitude: 5.86633),
@@ -29,15 +27,15 @@ struct MKMapRep: UIViewRepresentable {
         CLLocationCoordinate2D(latitude: 47.270111, longitude: 5.86633)
     ]
     
+    @State var holes: [MKPolygon]
+    
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.region = context.coordinator.mapRegion
         mapView.delegate = context.coordinator
         mapView.mapType = mapType
                
-        let holeOverDennishausen = MKPolygon(coordinates: coordsForHole, count: coordsForHole.count)
-        
-        let bigRect = MKPolygon(coordinates: germany, count: germany.count, interiorPolygons: [holeOverDennishausen])
+        let bigRect = MKPolygon(coordinates: germany, count: germany.count, interiorPolygons: holes)
         mapView.setVisibleMapRect(bigRect.boundingMapRect, edgePadding: .init(top: 0, left: 0, bottom: 0, right: 0), animated: true)
         mapView.addOverlay(bigRect)
         

@@ -14,7 +14,7 @@ struct ContentView: View {
     
     var body: some View {
         TabView {
-            ViewMapNew(mapTypeSettings: mapTypeSettings)
+            ViewMapNew(mapTypeSettings: mapTypeSettings, authentification: AuthentificationToken())
                 .tabItem {
                     Image(systemName: "map")
                     Text("Map")

@@ -6,9 +6,9 @@ struct LoginView: View {
     @State private var loginError = false
     @State private var isShowingRegister = false
     @State private var isLoggedIn = false
-    @State private var authToken: String?
-    @State private var refreshToken: String?
-
+    //@State private var authToken: String?
+    //@State private var refreshToken: String?
+    @ObservedObject var authentification: AuthentificationToken
     var body: some View {
         VStack {
             Image("TrailBlazerIcon")
@@ -180,8 +180,8 @@ struct LoginView: View {
                                    let token = jsonResponse["token"] as? String,
                                    let refreshToken = jsonResponse["refresh_token"] as? String {
                                     // Speichere den Token und das Refresh-Token
-                                    self.authToken = token
-                                    self.refreshToken = refreshToken
+                                    self.authentification.auth_token = token
+                                    self.authentification.refresh_token = refreshToken
                                     self.isLoggedIn = true
                                 } else {
                                     // Zeige eine Fehlermeldung in der UI an
@@ -197,6 +197,6 @@ struct LoginView: View {
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView()
+        LoginView(authentification: AuthentificationToken())
     }
 }

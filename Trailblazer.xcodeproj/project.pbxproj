@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0AF7CF582BDC1375004A60D0 /* AuthentificationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF7CF572BDC1375004A60D0 /* AuthentificationToken.swift */; };
 		CD04FCBB2BBEC1B200041725 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04FCBA2BBEC1B200041725 /* LoginView.swift */; };
 		CD04FCC02BBF528D00041725 /* ViewStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04FCBF2BBF528D00041725 /* ViewStats.swift */; };
 		CD04FCC22BBF52B100041725 /* ViewProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04FCC12BBF52B100041725 /* ViewProfile.swift */; };
@@ -27,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0AF7CF572BDC1375004A60D0 /* AuthentificationToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthentificationToken.swift; sourceTree = "<group>"; };
 		CD04FCBA2BBEC1B200041725 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		CD04FCBF2BBF528D00041725 /* ViewStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewStats.swift; sourceTree = "<group>"; };
 		CD04FCC12BBF52B100041725 /* ViewProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewProfile.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 				CD04FCBC2BBF523900041725 /* Views */,
 				CD8530DC2BD7D67F00FCE522 /* ProgressBar.swift */,
 				CD8760862BD92AC600F51B31 /* MapTypeSettings.swift */,
+				0AF7CF572BDC1375004A60D0 /* AuthentificationToken.swift */,
 			);
 			path = Trailblazer;
 			sourceTree = "<group>";
@@ -205,6 +208,7 @@
 				CD6D8B162BD8393C00675366 /* RegisterView.swift in Sources */,
 				CD8760872BD92AC600F51B31 /* MapTypeSettings.swift in Sources */,
 				CDA7CC9A2BA9039A00078822 /* ContentView.swift in Sources */,
+				0AF7CF582BDC1375004A60D0 /* AuthentificationToken.swift in Sources */,
 				CD04FCBB2BBEC1B200041725 /* LoginView.swift in Sources */,
 				CD04FCC02BBF528D00041725 /* ViewStats.swift in Sources */,
 				CD04FCCB2BCEB1DD00041725 /* MapViewModel.swift in Sources */,

@@ -12,7 +12,7 @@ struct TrailblazerApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationView{
-                ContentView()
+                LoginView(authentification: AuthentificationToken())
             }.navigationBarHidden(true)
         }
     }

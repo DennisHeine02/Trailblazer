@@ -37,7 +37,7 @@ struct ViewMapOld: View {
             .navigationBarTitle("Map")
         }
         .sheet(isPresented: $isShowingLogin) {
-            LoginView()
+            LoginView(authentification: AuthentificationToken())
         }
     }
 }
