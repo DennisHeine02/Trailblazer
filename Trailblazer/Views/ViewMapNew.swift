@@ -33,7 +33,7 @@ struct ViewMapNew: View {
                 Spacer()
                 VStack {
                     HStack{
-                        ProgressBar(width: 300, height: 25, percent: percent, color1: Color(.red), color2: Color(.orange))
+                        ProgressBar(width: 250, height: 25, percent: percent, color1: Color(.red), color2: Color(.orange))
                         
                         Text("\(Int(percent))%")
                             .font(.system(size: 30, weight: .bold))

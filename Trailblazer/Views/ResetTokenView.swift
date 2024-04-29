@@ -1,14 +1,14 @@
 import SwiftUI
 
-struct LoginView: View {
-    @State private var email = ""
-    @State private var password = ""
+struct ResetTokenView: View {
+    @State private var token = ""
     @State private var loginError = false
     @State private var isShowingRegister = false
     @State private var isLoggedIn = false
-    @State private var forgotPw = false
-
+    
+    
     @ObservedObject var authentification: AuthentificationToken
+
     var body: some View {
         VStack {
             Image("TrailBlazerIcon")
@@ -17,59 +17,45 @@ struct LoginView: View {
                 .frame(width: 100, height: 100)
                 .padding(.bottom, 50)
             
-            Text("Login")
+            Text("Gebe den Token aus der Email ein")
             
-            TextField("Email", text: $email)
+            TextField("Token", text: $token)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .autocapitalization(.none)
                 .padding()
-            SecureField("Password", text: $password)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
             
             Button("Passwort zurücksetzen"){
-                self.forgotPw = true
-            }.padding()
-            
-            HStack {
-                Text("Noch nicht registriert?")
-                Button("Klicke hier"){
-                    isShowingRegister = true
-                }
-            }
-            
-            Button("Log In"){
-                login()
+                // resetPW()
+                self.isShowingRegister = true
             }
             .font(.title2)
             .padding()
-            .alert(isPresented: $loginError) {
-                Alert(title: Text("Error"), message: Text("Invalid credentials"), dismissButton: .default(Text("OK")))
+            
+            HStack {
+                Text("Zurück zum Login?")
+                Button("Klicke hier"){
+                    self.isLoggedIn = true
+                }
             }
             
-            NavigationLink(destination: ContentView(authentification: authentification), isActive: $isLoggedIn) {
+            NavigationLink(destination: LoginView(authentification: authentification), isActive: $isLoggedIn) {
                                 EmptyView()
                             }
                             .hidden()
                             .navigationBarHidden(true)
-            
-            NavigationLink(destination: PwView(authentification: authentification), isActive: $forgotPw) {
+            NavigationLink(destination: ChangePWView(authentification: authentification), isActive: $isShowingRegister) {
                                 EmptyView()
                             }
                             .hidden()
                             .navigationBarHidden(true)
-            
-            
-        }.sheet(isPresented: $isShowingRegister) {
-            RegisterView()
             
         }
         .navigationBarHidden(true)
     }
     
-    func login() {
-        // Erstelle die URL
-        guard let url = URL(string: "http://195.201.42.22:8080/api/v1/auth/login") else {
+    func resetPW() {
+        
+        guard let url = URL(string: "http://195.201.42.22:8080/api/v1/auth/reset/accepted") else {
             print("Ungültige URL")
             return
         }
@@ -81,8 +67,8 @@ struct LoginView: View {
         // Setze den Content-Type
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        // Erstelle das JSON-Datenobjekt
-        let json: [String: Any] = ["email": email, "password": password]
+        let json = "aaa"
+        
         
         // Konvertiere das JSON in Daten
         guard let jsonData = try? JSONSerialization.data(withJSONObject: json) else {
@@ -123,28 +109,14 @@ struct LoginView: View {
                                 print("Antwort:")
                                 print(responseString)
                                 
-                                // Versuche, den Token und das Refresh-Token zu extrahieren
-                                if let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                                   let token = jsonResponse["token"] as? String,
-                                   let refreshToken = jsonResponse["refresh_token"] as? String {
-                                    // Speichere den Token und das Refresh-Token
-                                    self.authentification.auth_token = token
-                                    self.authentification.refresh_token = refreshToken
-                                    self.isLoggedIn = true
-                                } else {
-                                    // Zeige eine Fehlermeldung in der UI an
-                                    self.loginError = true
-                                }
                             }
                         }
         }.resume() // Starte die Anfrage
-
     }
-
 }
 
-struct LoginView_Previews: PreviewProvider {
+struct ResetTokenView_Pinreviews: PreviewProvider {
     static var previews: some View {
-        LoginView(authentification: AuthentificationToken())
+        ResetTokenView(authentification: AuthentificationToken())
     }
 }

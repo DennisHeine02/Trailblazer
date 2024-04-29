@@ -9,13 +9,13 @@ import Foundation
 
 import SwiftUI
 
-struct RegisterView: View {
-    @State private var firstname = ""
-    @State private var lastname = ""
-    @State private var email = ""
+struct ChangePWView: View {
     @State private var password1 = ""
     @State private var password2 = ""
     @State private var loginError = false
+    @State private var isLoggedIn = false
+    
+    @ObservedObject var authentification: AuthentificationToken
     
     var body: some View {
         VStack {
@@ -25,18 +25,8 @@ struct RegisterView: View {
                 .frame(width: 100, height: 100)
                 .padding(.bottom, 50)
             
-            Text("Register")
-            
-            TextField("Vorname", text: $firstname)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            TextField("Nachname", text: $lastname)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            TextField("Email", text: $email)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .autocapitalization(.none)
-                .padding()
+            Text("Passwort ändern")
+
             SecureField("Password", text: $password1)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
@@ -44,24 +34,31 @@ struct RegisterView: View {
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
             
-            Button("Registrieren"){
-                register()
+            Button("Festlegen"){
+                // register()
+                self.isLoggedIn = true
             }
             .font(.title2)
             .padding()
             .alert(isPresented: $loginError) {
                 Alert(title: Text("Error"), message: Text("Invalid credentials"), dismissButton: .default(Text("OK")))
             }
+            NavigationLink(destination: LoginView(authentification: authentification), isActive: $isLoggedIn) {
+                                EmptyView()
+                            }
+                            .hidden()
+                            .navigationBarHidden(true)
         }
         .padding()
     }
     
     func register() {
         if password1 != password2 {
-            self.loginError = true
+            // throw Error
         }
         
         // Erstelle die URL
+        // Not Implemented
         guard let url = URL(string: "http://195.201.42.22:8080/api/v1/auth/register") else {
             print("Ungültige URL")
             return
@@ -75,7 +72,7 @@ struct RegisterView: View {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         // Erstelle das JSON-Datenobjekt
-        let json: [String: Any] = ["email": email, "password": password1, "firstname": firstname, "lastname": lastname]
+        let json: [String: Any] = ["email": "lastname"]
         
         // Konvertiere das JSON in Daten
         guard let jsonData = try? JSONSerialization.data(withJSONObject: json) else {
@@ -116,6 +113,8 @@ struct RegisterView: View {
                     print("Antwort:")
                     print(responseString)
                     
+                    
+                    
                 } else {
                     // Zeige eine Fehlermeldung in der UI an
                     self.loginError = true
@@ -125,8 +124,8 @@ struct RegisterView: View {
     }
 }
 
-struct RegisterView_Previews: PreviewProvider {
+struct ChangePWView_Previews: PreviewProvider {
     static var previews: some View {
-        RegisterView()
+        ChangePWView(authentification: AuthentificationToken())
     }
 }
