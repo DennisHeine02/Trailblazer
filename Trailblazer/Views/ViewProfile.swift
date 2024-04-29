@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct Friend: Identifiable {
+struct Friend: Identifiable, Decodable {
     var id = UUID()
     var name: String
     var email: String
@@ -12,6 +12,9 @@ struct Friend: Identifiable {
 struct ViewProfile: View {
     var myColor = Color("ColorOrange")
     @State private var nameToAdd = ""
+    @State var friendsList = ""
+    @ObservedObject var authentification: AuthentificationToken
+    @State private var isLoggedOut = false
     
     @State var friends: [Friend] = [
         Friend(name: "Freund 1", email: "freund1@example.com", picture: "ProfilePicture", percent: 10),
@@ -63,7 +66,7 @@ struct ViewProfile: View {
                             }
                             
                             Button(action: {
-                                // Action for "Passwort ändern"
+                                // Spaceholder
                             }) {
                                 Text("PW ändern")
                                     .frame(maxWidth: .infinity, maxHeight: 50)
@@ -86,8 +89,14 @@ struct ViewProfile: View {
                 Spacer()
                         }
                         .padding(.top, 1)
+            NavigationLink(destination: LoginView(authentification: authentification), isActive: $isLoggedOut) {
+                                EmptyView()
+                            }
+                            .hidden()
+                            .navigationBarHidden(true)
             Divider()
             VStack() {
+                
                 Text("Freunde")
                     .font(.headline)
                     .padding(.top, 20)
@@ -144,6 +153,8 @@ struct ViewProfile: View {
                     }
                 }
                 
+            }.onAppear {
+                getFriends()
             }
             HStack {
                 TextField("Add Name", text: $nameToAdd)
@@ -173,9 +184,102 @@ struct ViewProfile: View {
         }
         .edgesIgnoringSafeArea(.all)
     }
+    func getFriends() {
+            guard let url = URL(string: "http://195.201.42.22:8080/api/v1/friends") else {
+                print("Ungültige URL")
+                return
+            }
+            
+            // Erstellen Sie die Anfrage
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            
+            // Setzen Sie den Content-Type
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            // Fügen Sie den Authorization-Header hinzu
+            let authToken = "Bearer " + authentification.auth_token
+            request.setValue(authToken, forHTTPHeaderField: "Authorization")
+            
+            // Führen Sie die Anfrage aus
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            // Überprüfen Sie auf Fehler
+            if let error = error {
+                print("Fehler: \(error)")
+                return
+            }
+            
+            // Überprüfen Sie die Antwort
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Ungültige Antwort")
+                return
+            }
+            
+            // Drucken Sie den Statuscode
+            print("Statuscode: \(httpResponse.statusCode)")
+            
+            // Überprüfe den Inhalt der Antwort
+            if let data = data {
+                // Konvertiere die Daten in einen lesbaren String
+                if let responseString = String(data: data, encoding: .utf8) {
+                    print("Antwort:")
+                    print(responseString)
+                    self.friendsList = responseString
+                }
+            }
+        }.resume() // Starten Sie die Anfrage
+    }
     
     func logout() {
+        guard let url = URL(string: "http://195.201.42.22:8080/api/v1/auth/logout") else {
+            print("Ungültige URL")
+            return
+        }
         
+        // Erstelle die Anfrage
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        // Setze den Content-Type
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        // Hinzufügen des Authorization-Headers
+        let authToken = "Bearer " + authentification.auth_token
+        request.setValue(authToken, forHTTPHeaderField: "Authorization")
+        
+        // Führe die Anfrage aus
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            // Überprüfe auf Fehler
+            if let error = error {
+                print("Fehler: \(error)")
+                return
+            }
+            
+            // Überprüfe die Antwort
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Ungültige Antwort")
+                return
+            }
+            
+            // Drucke den Statuscode
+            print("Statuscode: \(httpResponse.statusCode)")
+            
+            // Drucke den Header
+            print("Header:")
+            for (key, value) in httpResponse.allHeaderFields {
+                print("\(key): \(value)")
+            }
+            
+            // Überprüfe den Inhalt der Antwort
+                        if let data = data {
+                            // Konvertiere die Daten in einen lesbaren String
+                            if let responseString = String(data: data, encoding: .utf8) {
+                                print("Antwort:")
+                                print(responseString)
+                                self.isLoggedOut = true
+                            }
+                        }
+        }.resume() // Starte die Anfrage
     }
     
     func delete(_ friend: Friend) {
@@ -187,6 +291,6 @@ struct ViewProfile: View {
 
 struct ViewProfile_Previews: PreviewProvider {
     static var previews: some View {
-        ViewProfile()
+        ViewProfile(authentification: AuthentificationToken())
     }
 }

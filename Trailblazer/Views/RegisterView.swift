@@ -35,6 +35,7 @@ struct RegisterView: View {
                 .padding()
             TextField("Email", text: $email)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
+                .autocapitalization(.none)
                 .padding()
             SecureField("Password", text: $password1)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
