@@ -18,6 +18,7 @@ struct ViewProfile: View {
     @State var friendsList = ""
     @ObservedObject var authentification: AuthentificationToken
     @State private var isLoggedOut = false
+    @State private var isPwChange = false
     
     @State var friends: [Friend] = [
         Friend(name: "Freund 1", email: "freund1@example.com", picture: "ProfilePicture", percent: 10),
@@ -69,7 +70,7 @@ struct ViewProfile: View {
                             }
                             
                             Button(action: {
-                                // Spaceholder
+                                self.isPwChange = true
                             }) {
                                 Text("PW ändern")
                                     .frame(maxWidth: .infinity, maxHeight: 50)
@@ -93,6 +94,11 @@ struct ViewProfile: View {
                         }
                         .padding(.top, 1)
             NavigationLink(destination: LoginView(authentification: authentification), isActive: $isLoggedOut) {
+                                EmptyView()
+                            }
+                            .hidden()
+                            .navigationBarHidden(true)
+            NavigationLink(destination: ChangePWView(authentification: authentification), isActive: $isPwChange) {
                                 EmptyView()
                             }
                             .hidden()

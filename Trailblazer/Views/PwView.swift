@@ -24,7 +24,7 @@ struct PwView: View {
                 .autocapitalization(.none)
                 .padding()
             
-            Button("Passwort zurücksetzen"){
+            Button("Zurücksetzen"){
                 resetPW()
             }
             .font(.title2)
@@ -38,6 +38,11 @@ struct PwView: View {
             }
             
             NavigationLink(destination: LoginView(authentification: authentification), isActive: $isLoggedIn) {
+                                EmptyView()
+                            }
+                            .hidden()
+                            .navigationBarHidden(true)
+            NavigationLink(destination: ResetTokenView(authentification: authentification), isActive: $isShowingRegister) {
                                 EmptyView()
                             }
                             .hidden()
@@ -102,7 +107,7 @@ struct PwView: View {
                             if let responseString = String(data: data, encoding: .utf8) {
                                 print("Antwort:")
                                 print(responseString)
-                                self.isLoggedIn = true
+                                self.isShowingRegister = true
                             }
                         }
         }.resume() // Starte die Anfrage
