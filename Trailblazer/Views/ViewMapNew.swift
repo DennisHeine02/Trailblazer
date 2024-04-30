@@ -9,11 +9,9 @@ import SwiftUI
 import MapKit
 
 struct ViewMapNew: View {
-    
     @StateObject private var mapVM = MapViewModel()
     @State private var isShowingLogin = false
     @State var percent : CGFloat = 31
-
     @ObservedObject var mapTypeSettings: MapTypeSettings
     @ObservedObject var authentification: AuthentificationToken
     
@@ -27,9 +25,6 @@ struct ViewMapNew: View {
     var body: some View {
         ZStack {
             MKMapRep(mapVM: mapVM, mapType: mapTypeBinding, authentification: AuthentificationToken(), holes: getHoles())
-                .onAppear{
-                    
-                }
             Spacer()
             VStack {
                 HStack{
@@ -43,8 +38,8 @@ struct ViewMapNew: View {
                 
                 // Button zum Aufrufen von getVisitedLocations
                 Button(action: {
-                    let mapRep = MKMapRep(mapVM: self.mapVM, mapType: self.mapTypeBinding, authentification: AuthentificationToken(), holes: getHoles())
-                    getVisitedLocations(latitude: 48.440194182762376, longitude: 8.67894607854444, zoomLevel: 14)
+                    let mapRep = MKMapRep(mapVM: self.mapVM, mapType: self.mapTypeBinding, authentification: AuthentificationToken(), holes: self.getHoles())
+                    self.getVisitedLocations(latitude: 48.440194182762376, longitude: 8.67894607854444, zoomLevel: 14)
                 }) {
                     Text("Get Visited Locations")
                         .font(.headline)

@@ -17,8 +17,7 @@ struct MKMapRep: UIViewRepresentable {
     let latitude: String = "48.440194182762376"
     let longitude: String = "8.67894607854444"
     let zoomLevel: String = "14"
-    
-    
+    fileprivate let locationManager: CLLocationManager = CLLocationManager()
     
     let germany = [
         CLLocationCoordinate2D(latitude: 55.0846, longitude: 5.86633),
@@ -39,6 +38,13 @@ struct MKMapRep: UIViewRepresentable {
         mapView.setVisibleMapRect(bigRect.boundingMapRect, edgePadding: .init(top: 0, left: 0, bottom: 0, right: 0), animated: true)
         mapView.addOverlay(bigRect)
         
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.distanceFilter = kCLDistanceFilterNone
+        locationManager.startUpdatingLocation()
+        
+        mapView.showsUserLocation = true
+        
         return mapView
     }
     
@@ -51,7 +57,4 @@ struct MKMapRep: UIViewRepresentable {
     }
     
     typealias UIViewType = MKMapView
-    
-    
-    
 }
