@@ -8,6 +8,8 @@
 import Foundation
 
 class AuthentificationToken: ObservableObject {
+    
     @Published var auth_token: String = "";
     @Published var refresh_token: String = "";
+    
 }

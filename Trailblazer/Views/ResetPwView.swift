@@ -1,22 +1,21 @@
 //
-//  RegisterView.swift
+//  PwView.swift
 //  Trailblazer
 //
-//  Created by Dennis Heine on 23.04.24.
+//  Created by Dennis Heine on 29.04.24.
 //
 
-import Foundation
 import SwiftUI
 
-struct RegisterView: View {
+struct ResetPwView: View {
     
-    @State private var firstname = ""
-    @State private var lastname = ""
     @State private var email = ""
-    @State private var password1 = ""
-    @State private var password2 = ""
-    @State private var loginError = false
+    @State private var password = ""
+    @State private var showResetTokenView = false
+    @State private var showLoginView = false
     
+    @ObservedObject var authentification: AuthentificationToken
+
     var body: some View {
         VStack {
             Image("TrailBlazerIcon")
@@ -25,52 +24,46 @@ struct RegisterView: View {
                 .frame(width: 100, height: 100)
                 .padding(.bottom, 50)
             
-            Text("Register")
-            
-            TextField("Vorname", text: $firstname)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            
-            TextField("Nachname", text: $lastname)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
+            Text("Passwort zurücksetzen")
             
             TextField("Email", text: $email)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .autocapitalization(.none)
                 .padding()
             
-            SecureField("Password", text: $password1)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            
-            SecureField("Password wiederholen", text: $password2)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            
-            Button("Registrieren"){
-                register()
+            Button("Zurücksetzen"){
+                resetPW()
             }
             .font(.title2)
             .padding()
-            .alert(isPresented: $loginError) {
-                Alert(title: Text("Error"), message: Text("Invalid credentials"), dismissButton: .default(Text("OK")))
+            
+            HStack {
+                Text("Zurück zum Login?")
+                Button("Klicke hier"){
+                    self.showLoginView = true
+                }
             }
+            
+            NavigationLink(destination: LoginView(authentification: authentification), isActive: $showLoginView) {
+                                EmptyView()
+                            }
+                            .hidden()
+                            .navigationBarHidden(true)
+            NavigationLink(destination: ResetTokenView(authentification: authentification), isActive: $showResetTokenView) {
+                                EmptyView()
+                            }
+                            .hidden()
+                            .navigationBarHidden(true)
+            
         }
-        .padding()
+        .navigationBarHidden(true)
     }
     
-    /// Methode zum Registrieren eines neuen Benutzer
-    func register() {
-        
-        // Überprüfe auf korrektes Password
-        if password1 != password2 {
-            self.loginError = true
-            return
-        }
+    /// Methode um das Passwort zurückzusetzen
+    func resetPW() {
         
         // Erstelle die URL
-        guard let url = URL(string: "http://195.201.42.22:8080/api/v1/auth/register") else {
+        guard let url = URL(string: "http://195.201.42.22:8080/api/v1/auth/reset") else {
             print("Ungültige URL")
             return
         }
@@ -83,7 +76,7 @@ struct RegisterView: View {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         // Erstelle das JSON-Datenobjekt
-        let json: [String: Any] = ["email": email, "password": password1, "firstname": firstname, "lastname": lastname]
+        let json: [String: Any] = ["email": email]
         
         // Konvertiere das JSON in Daten
         guard let jsonData = try? JSONSerialization.data(withJSONObject: json) else {
@@ -118,23 +111,20 @@ struct RegisterView: View {
             }
             
             // Überprüfe den Inhalt der Antwort
-            if let data = data {
-                // Konvertiere die Daten in einen lesbaren String
-                if let responseString = String(data: data, encoding: .utf8) {
-                    print("Antwort:")
-                    print(responseString)
-                    
-                } else {
-                    // Zeige eine Fehlermeldung in der UI an
-                    self.loginError = true
-                }
-            }
-        }.resume() // Starte die Anfrage}
+                        if let data = data {
+                            // Konvertiere die Daten in einen lesbaren String
+                            if let responseString = String(data: data, encoding: .utf8) {
+                                print("Antwort:")
+                                print(responseString)
+                                self.showResetTokenView = true
+                            }
+                        }
+        }.resume() // Starte die Anfrage
     }
 }
 
-struct RegisterView_Previews: PreviewProvider {
+struct ResetPwView_Pinreviews: PreviewProvider {
     static var previews: some View {
-        RegisterView()
+        ResetPwView(authentification: AuthentificationToken())
     }
 }

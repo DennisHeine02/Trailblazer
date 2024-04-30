@@ -1,16 +1,23 @@
+//
+//  ResetTokenView.swift
+//  Trailblazer
+//
+//  Created by Dennis Heine on 29.04.24.
+//
+
 import SwiftUI
 
 struct ResetTokenView: View {
-    @State private var token = ""
-    @State private var loginError = false
-    @State private var isShowingRegister = false
-    @State private var isLoggedIn = false
     
+    @State private var token = ""
+    @State private var showChangePwView = false
+    @State private var showLoginView = false
     
     @ObservedObject var authentification: AuthentificationToken
-
+    
     var body: some View {
         VStack {
+            
             Image("TrailBlazerIcon")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
@@ -25,8 +32,8 @@ struct ResetTokenView: View {
                 .padding()
             
             Button("Passwort zurücksetzen"){
-                // resetPW()
-                self.isShowingRegister = true
+                // acceptToken()
+                self.showChangePwView = true
             }
             .font(.title2)
             .padding()
@@ -34,27 +41,29 @@ struct ResetTokenView: View {
             HStack {
                 Text("Zurück zum Login?")
                 Button("Klicke hier"){
-                    self.isLoggedIn = true
+                    self.showLoginView = true
                 }
             }
             
-            NavigationLink(destination: LoginView(authentification: authentification), isActive: $isLoggedIn) {
-                                EmptyView()
-                            }
-                            .hidden()
-                            .navigationBarHidden(true)
-            NavigationLink(destination: ChangePWView(authentification: authentification), isActive: $isShowingRegister) {
-                                EmptyView()
-                            }
-                            .hidden()
-                            .navigationBarHidden(true)
+            NavigationLink(destination: LoginView(authentification: authentification), isActive: $showLoginView) {
+                EmptyView()
+            }
+            .hidden()
+            .navigationBarHidden(true)
+            NavigationLink(destination: ChangePwView(authentification: authentification), isActive: $showChangePwView) {
+                EmptyView()
+            }
+            .hidden()
+            .navigationBarHidden(true)
             
         }
         .navigationBarHidden(true)
     }
     
-    func resetPW() {
+    /// Methode um den Acces Token zu überprüfen
+    func acceptToken() {
         
+        // Erstelle die URL
         guard let url = URL(string: "http://195.201.42.22:8080/api/v1/auth/reset/accepted") else {
             print("Ungültige URL")
             return
@@ -68,7 +77,6 @@ struct ResetTokenView: View {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let json = "aaa"
-        
         
         // Konvertiere das JSON in Daten
         guard let jsonData = try? JSONSerialization.data(withJSONObject: json) else {
@@ -103,14 +111,13 @@ struct ResetTokenView: View {
             }
             
             // Überprüfe den Inhalt der Antwort
-                        if let data = data {
-                            // Konvertiere die Daten in einen lesbaren String
-                            if let responseString = String(data: data, encoding: .utf8) {
-                                print("Antwort:")
-                                print(responseString)
-                                
-                            }
-                        }
+            if let data = data {
+                // Konvertiere die Daten in einen lesbaren String
+                if let responseString = String(data: data, encoding: .utf8) {
+                    print("Antwort:")
+                    print(responseString)
+                }
+            }
         }.resume() // Starte die Anfrage
     }
 }

@@ -1,24 +1,26 @@
 //
-//  RegisterView.swift
+//  ChangePWView.swift
 //  Trailblazer
 //
-//  Created by Dennis Heine on 23.04.24.
+//  Created by Dennis Heine on 29.04.24.
 //
 
 import Foundation
 
 import SwiftUI
 
-struct ChangePWView: View {
+struct ChangePwView: View {
+    
     @State private var password1 = ""
     @State private var password2 = ""
     @State private var loginError = false
-    @State private var isLoggedIn = false
+    @State private var showLoginView = false
     
     @ObservedObject var authentification: AuthentificationToken
     
     var body: some View {
         VStack {
+            
             Image("TrailBlazerIcon")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
@@ -26,39 +28,43 @@ struct ChangePWView: View {
                 .padding(.bottom, 50)
             
             Text("Passwort ändern")
-
+            
             SecureField("Password", text: $password1)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
+            
             SecureField("Password wiederholen", text: $password2)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
             
             Button("Festlegen"){
-                // register()
-                self.isLoggedIn = true
+                // createNewPw()
+                self.showLoginView = true
             }
             .font(.title2)
             .padding()
             .alert(isPresented: $loginError) {
                 Alert(title: Text("Error"), message: Text("Invalid credentials"), dismissButton: .default(Text("OK")))
             }
-            NavigationLink(destination: LoginView(authentification: authentification), isActive: $isLoggedIn) {
-                                EmptyView()
-                            }
-                            .hidden()
-                            .navigationBarHidden(true)
+            
+            NavigationLink(destination: LoginView(authentification: authentification), isActive: $showLoginView) {
+                EmptyView()
+            }
+            .hidden()
+            .navigationBarHidden(true)
+            
         }
         .padding()
     }
     
-    func register() {
+    /// Methode um ein neues Passwort für den Benutzer zu erstellen
+    func createNewPw() {
+        
         if password1 != password2 {
-            // throw Error
+            // werfe Error
         }
         
         // Erstelle die URL
-        // Not Implemented
         guard let url = URL(string: "http://195.201.42.22:8080/api/v1/auth/register") else {
             print("Ungültige URL")
             return
@@ -113,8 +119,6 @@ struct ChangePWView: View {
                     print("Antwort:")
                     print(responseString)
                     
-                    
-                    
                 } else {
                     // Zeige eine Fehlermeldung in der UI an
                     self.loginError = true
@@ -124,8 +128,8 @@ struct ChangePWView: View {
     }
 }
 
-struct ChangePWView_Previews: PreviewProvider {
+struct ChangePwView_Previews: PreviewProvider {
     static var previews: some View {
-        ChangePWView(authentification: AuthentificationToken())
+        ChangePwView(authentification: AuthentificationToken())
     }
 }

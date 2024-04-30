@@ -36,7 +36,7 @@ struct ContentView: View {
                     Text("Settings")
                 }
         }.edgesIgnoringSafeArea(.all)
-         .navigationBarHidden(true)
+            .navigationBarHidden(true)
     }
 }
 

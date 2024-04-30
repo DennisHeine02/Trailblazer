@@ -1,52 +1,30 @@
+//
+//  ViewStats.swift
+//  Trailblazer
+//
+//  Created by Dennis Heine on 19.03.24.
+//
+
 import SwiftUI
 
 struct ViewStats: View {
     var body: some View {
-        TabView {
-            StatsOverviewView()
-        }
-    }
-}
-
-struct StatsOverviewView: View {
-    var body: some View {
         VStack {
+            
             Text("Stats")
                 .font(.title)
                 .padding(.bottom, 10)
+            
             Divider()
-//            GermanyStatsView()
-//            Divider()
-            BundeslandListView()
+            
+            ShowStatsView()
         }
         .padding()
     }
 }
 
-//struct GermanyStatsView: View {
-//    // Assuming you have a computed property to calculate overall stats for Germany
-//    var germanyOverallStats: (String, Double) {
-//        // Calculate overall stats here
-//        return ("Deutschland", 75.0) // Example data
-//    }
-//    
-//    var body: some View {
-//        VStack(alignment: .leading) {
-//            Text("Deutschland")
-//                .font(.headline)
-//            HStack {
-//                Text(germanyOverallStats.0)
-//                    .frame(maxWidth: .infinity, alignment: .leading)
-//                Spacer()
-//                Text(String(format: "%.2f%%", germanyOverallStats.1))
-//                    .frame(maxWidth: .infinity, alignment: .trailing)
-//            }
-//        }
-//    }
-//}
+struct ShowStatsView: View {
 
-struct BundeslandListView: View {
-    // Sample data of all German Bundesländer and their respective percentages (sample values)
     let bundeslandStats: [(String, Double)] = [
         ("Baden-Württemberg", 15.0),
         ("Bayern", 18.0),
@@ -66,14 +44,16 @@ struct BundeslandListView: View {
         ("Thüringen", 3.0)
     ]
     
-    // Total percentage of all Bundesländer
+    // Prozentteil aller Bundesländer
     var totalPercentage: Double {
         return bundeslandStats.map { $0.1 }.reduce(0, +)
     }
     
+    
     var body: some View {
         VStack(alignment: .leading) {
             VStack {
+                
                 Text("Deutschland")
                     .frame(maxWidth: .infinity, alignment: .center)
                     .font(.title)
@@ -87,10 +67,13 @@ struct BundeslandListView: View {
                         .font(.system(size: 30, weight: .bold))
                 }
             }
+            
             Divider()
+            
             Text("Bundesländer")
                 .frame(maxWidth: .infinity, alignment: .center)
                 .font(.headline)
+            
             List {
                 ForEach(bundeslandStats, id: \.0) { bundesland in
                     VStack {
@@ -110,8 +93,6 @@ struct BundeslandListView: View {
         .padding()
     }
 }
-
-
 
 struct ViewStats_Previews: PreviewProvider {
     static var previews: some View {
