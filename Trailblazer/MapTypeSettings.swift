@@ -10,5 +10,7 @@ import SwiftUI
 import MapKit
 
 class MapTypeSettings: ObservableObject {
+    
     @Published var mapType: MKMapType = .standard
+    
 }
