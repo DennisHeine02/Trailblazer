@@ -1,55 +1,45 @@
 //
-//  LoginView.swift
+//  ChangePWView.swift
 //  Trailblazer
 //
-//  Created by Dennis Heine on 23.04.24.
+//  Created by Dennis Heine on 29.04.24.
 //
+
+import Foundation
 
 import SwiftUI
 
-struct LoginView: View {
+struct ChangePwView: View {
     
-    @State private var email = ""
-    @State private var password = ""
+    @State private var password1 = ""
+    @State private var password2 = ""
     @State private var loginError = false
-    @State private var showRegisterView = false
     @State private var showLoginView = false
-    @State private var showResetPwView = false
     
     @ObservedObject var authentification: AuthentificationToken
     
     var body: some View {
         VStack {
+            
             Image("TrailBlazerIcon")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 100, height: 100)
                 .padding(.bottom, 50)
             
-            Text("Login")
+            Text("Passwort ändern")
             
-            TextField("Email", text: $email)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .autocapitalization(.none)
-                .padding()
-            
-            SecureField("Password", text: $password)
+            SecureField("Password", text: $password1)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
             
-            Button("Passwort zurücksetzen"){
-                self.showResetPwView = true
-            }.padding()
+            SecureField("Password wiederholen", text: $password2)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
             
-            HStack {
-                Text("Noch nicht registriert?")
-                Button("Klicke hier"){
-                    showRegisterView = true
-                }
-            }
-            
-            Button("Log In"){
-                login()
+            Button("Festlegen"){
+                // createNewPw()
+                self.showLoginView = true
             }
             .font(.title2)
             .padding()
@@ -57,31 +47,25 @@ struct LoginView: View {
                 Alert(title: Text("Error"), message: Text("Invalid credentials"), dismissButton: .default(Text("OK")))
             }
             
-            NavigationLink(destination: ContentView(authentification: authentification), isActive: $showLoginView) {
+            NavigationLink(destination: LoginView(authentification: authentification), isActive: $showLoginView) {
                 EmptyView()
             }
             .hidden()
             .navigationBarHidden(true)
-            
-            NavigationLink(destination: ResetPwView(authentification: authentification), isActive: $showResetPwView) {
-                EmptyView()
-            }
-            .hidden()
-            .navigationBarHidden(true)
-            
-            
-        }.sheet(isPresented: $showRegisterView) {
-            RegisterView()
             
         }
-        .navigationBarHidden(true)
+        .padding()
     }
     
-    /// Methode für den Login von Benutzern
-    func login() {
+    /// Methode um ein neues Passwort für den Benutzer zu erstellen
+    func createNewPw() {
+        
+        if password1 != password2 {
+            // werfe Error
+        }
         
         // Erstelle die URL
-        guard let url = URL(string: "http://195.201.42.22:8080/api/v1/auth/login") else {
+        guard let url = URL(string: "http://195.201.42.22:8080/api/v1/auth/register") else {
             print("Ungültige URL")
             return
         }
@@ -94,7 +78,7 @@ struct LoginView: View {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         // Erstelle das JSON-Datenobjekt
-        let json: [String: Any] = ["email": email, "password": password]
+        let json: [String: Any] = ["email": "lastname"]
         
         // Konvertiere das JSON in Daten
         guard let jsonData = try? JSONSerialization.data(withJSONObject: json) else {
@@ -135,28 +119,17 @@ struct LoginView: View {
                     print("Antwort:")
                     print(responseString)
                     
-                    // Versuche, den Token und das Refresh-Token zu extrahieren
-                    if let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                       let token = jsonResponse["token"] as? String,
-                       let refreshToken = jsonResponse["refresh_token"] as? String {
-                        // Speichere den Token und das Refresh-Token
-                        self.authentification.auth_token = token
-                        self.authentification.refresh_token = refreshToken
-                        self.showLoginView = true
-                    } else {
-                        // Zeige eine Fehlermeldung in der UI an
-                        self.loginError = true
-                    }
+                } else {
+                    // Zeige eine Fehlermeldung in der UI an
+                    self.loginError = true
                 }
             }
-        }.resume() // Starte die Anfrage
-        
+        }.resume() // Starte die Anfrage}
     }
-    
 }
 
-struct LoginView_Previews: PreviewProvider {
+struct ChangePwView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView(authentification: AuthentificationToken())
+        ChangePwView(authentification: AuthentificationToken())
     }
 }

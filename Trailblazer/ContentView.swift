@@ -25,7 +25,7 @@ struct ContentView: View {
                     Image(systemName: "list.bullet")
                     Text("Stats")
                 }
-            ViewProfile()
+            ViewProfile(authentification: authentification)
                 .tabItem {
                     Image(systemName: "person")
                     Text("Profile")
@@ -36,7 +36,7 @@ struct ContentView: View {
                     Text("Settings")
                 }
         }.edgesIgnoringSafeArea(.all)
-         .navigationBarHidden(true)
+            .navigationBarHidden(true)
     }
 }
 

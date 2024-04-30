@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ProgressBar : View {
+    
     var width : CGFloat = 200
     var height : CGFloat = 20
     var percent : CGFloat = 69
@@ -15,9 +16,11 @@ struct ProgressBar : View {
     var color2 = Color(.orange)
     
     var body: some View {
+        
         let multiplier = width / 100
         
         ZStack(alignment: .leading){
+            
             RoundedRectangle(cornerRadius: height, style:  .continuous)
                 .frame(width: width, height: height)
             .foregroundColor(Color.black.opacity(0.1))

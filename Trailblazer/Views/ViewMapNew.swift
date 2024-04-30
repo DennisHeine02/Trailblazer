@@ -1,5 +1,5 @@
 //
-//  ViewMapLukas.swift
+//  ViewMapNew.swift
 //  Trailblazer
 //
 //  Created by Dennis Heine on 19.03.24.
@@ -13,52 +13,53 @@ struct ViewMapNew: View {
     @StateObject private var mapVM = MapViewModel()
     @State private var isShowingLogin = false
     @State var percent : CGFloat = 31
-//    @State public var mapType: MKMapType = .standard // Define a default map type {standard, satellite or hybrid}
+
     @ObservedObject var mapTypeSettings: MapTypeSettings
     @ObservedObject var authentification: AuthentificationToken
     
     var mapTypeBinding: Binding<MKMapType> {
-            Binding<MKMapType>(
-                get: { self.mapTypeSettings.mapType },
-                set: { self.mapTypeSettings.mapType = $0 }
-            )
-        }
-
+        Binding<MKMapType>(
+            get: { self.mapTypeSettings.mapType },
+            set: { self.mapTypeSettings.mapType = $0 }
+        )
+    }
+    
     var body: some View {
-            ZStack {
-                MKMapRep(mapVM: mapVM, mapType: mapTypeBinding, authentification: AuthentificationToken(), holes: getHoles())
-                    .onAppear{
-                        
-                    }
-                Spacer()
-                VStack {
-                    HStack{
-                        ProgressBar(width: 300, height: 25, percent: percent, color1: Color(.red), color2: Color(.orange))
-                        
-                        Text("\(Int(percent))%")
-                            .font(.system(size: 30, weight: .bold))
-                    }
-                    
-                    Spacer()
-                    
-                    // Button zum Aufrufen von getVisitedLocations
-                    Button(action: {
-                        let mapRep = MKMapRep(mapVM: self.mapVM, mapType: self.mapTypeBinding, authentification: AuthentificationToken(), holes: getHoles())
-                        getVisitedLocations(latitude: 48.440194182762376, longitude: 8.67894607854444, zoomLevel: 14)
-                    }) {
-                        Text("Get Visited Locations")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(Color.blue)
-                            .cornerRadius(10)
-                    }
+        ZStack {
+            MKMapRep(mapVM: mapVM, mapType: mapTypeBinding, authentification: AuthentificationToken(), holes: getHoles())
+                .onAppear{
                     
                 }
-                .padding()
+            Spacer()
+            VStack {
+                HStack{
+                    ProgressBar(width: 250, height: 25, percent: percent, color1: Color(.red), color2: Color(.orange))
+                    
+                    Text("\(Int(percent))%")
+                        .font(.system(size: 30, weight: .bold))
+                }
+                
+                Spacer()
+                
+                // Button zum Aufrufen von getVisitedLocations
+                Button(action: {
+                    let mapRep = MKMapRep(mapVM: self.mapVM, mapType: self.mapTypeBinding, authentification: AuthentificationToken(), holes: getHoles())
+                    getVisitedLocations(latitude: 48.440194182762376, longitude: 8.67894607854444, zoomLevel: 14)
+                }) {
+                    Text("Get Visited Locations")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.blue)
+                        .cornerRadius(10)
+                }
             }
+            .padding()
         }
+    }
     
+    /// Methoden Beschreibung hintufügen
+    /// - Returns: <#description#>
     func getHoles() -> [MKPolygon] {
         var holes: [MKPolygon] = []
         let coordsForHole: [CLLocationCoordinate2D] = [
@@ -72,6 +73,11 @@ struct ViewMapNew: View {
         return holes
     }
     
+    /// Methoden Beschreibung hintufügen
+    /// - Parameters:
+    ///   - latitude: <#latitude description#>
+    ///   - longitude: <#longitude description#>
+    ///   - zoomLevel: <#zoomLevel description#>
     func getVisitedLocations(latitude: Double, longitude: Double, zoomLevel: Int) {
         // Die URL für den Request mit Query-Parametern
         guard var urlComponents = URLComponents(string: "http://195.201.42.22:8080/api/v1/locations") else {
@@ -132,19 +138,6 @@ struct ViewMapNew: View {
                 if let responseString = String(data: data, encoding: .utf8) {
                     print("Antwort:")
                     print(responseString)
-                    
-                    // Versuche, den Token und das Refresh-Token zu extrahieren
-                    /*if let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                       let token = jsonResponse["token"] as? String,
-                       let refreshToken = jsonResponse["refresh_token"] as? String {
-                        // Speichere den Token und das Refresh-Token
-                        self.authentification.auth_token = token
-                        self.authentification.refresh_token = refreshToken
-                        self.isLoggedIn = true
-                    } else {
-                        // Zeige eine Fehlermeldung in der UI an
-                        self.loginError = true
-                    }*/
                 }
             }
         }.resume() // Starte die Anfrage
@@ -153,7 +146,6 @@ struct ViewMapNew: View {
 
 struct ViewMapNew_Previews: PreviewProvider {
     static var previews: some View {
-        let mapTypeSettings = MapTypeSettings()
-        ViewMapNew(mapTypeSettings: mapTypeSettings, authentification: AuthentificationToken())
+        ViewMapNew(mapTypeSettings: MapTypeSettings(), authentification: AuthentificationToken())
     }
 }
