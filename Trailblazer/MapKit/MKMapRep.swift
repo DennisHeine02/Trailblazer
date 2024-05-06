@@ -77,17 +77,10 @@ struct MKMapRep: UIViewRepresentable {
     func getVisitedLocations(latitude: Double, longitude: Double, zoomLevel: Int) async throws {
         var holes: [MKPolygon] = []
         // Die URL für den Request mit Query-Parametern
-        guard var urlComponents = URLComponents(string: "http://195.201.42.22:8080/api/v1/locations") else {
+        guard var urlComponents = URLComponents(string: "http://195.201.42.22:8080/api/v1/locations/all") else {
             print("Ungültige URL")
             return
         }
-        
-        // Hinzufügen der Query-Parameter
-        urlComponents.queryItems = [
-            URLQueryItem(name: "latitude", value: "\(latitude)"),
-            URLQueryItem(name: "longitude", value: "\(longitude)"),
-            URLQueryItem(name: "zoomLevel", value: "\(zoomLevel)")
-        ]
         
         // Erstelle die URL aus den URL-Komponenten
         guard let url = urlComponents.url else {
