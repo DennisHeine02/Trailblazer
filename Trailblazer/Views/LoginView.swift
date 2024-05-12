@@ -92,7 +92,7 @@ struct LoginView: View {
         
         // Setze den Content-Type
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
+        request.setValue("UserPasswordAuth", forHTTPHeaderField: "X-Login-Type")
         // Erstelle das JSON-Datenobjekt
         let json: [String: Any] = ["email": email, "password": password]
         
