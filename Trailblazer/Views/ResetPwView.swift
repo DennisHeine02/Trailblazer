@@ -47,6 +47,10 @@ struct ResetPwView: View {
                 .autocapitalization(.none)
                 .padding()
             
+            Text("Bitte den Code aus der empfangenen Email eingeben")
+                .font(.system(size: 12))
+                .foregroundColor(Color.gray)
+            
             Button("Zurücksetzen"){
                 resetPW()
             }
@@ -68,12 +72,6 @@ struct ResetPwView: View {
                             }
                             .hidden()
                             .navigationBarHidden(true)
-            NavigationLink(destination: ResetTokenView(authentification: authentification), isActive: $showResetTokenView) {
-                                EmptyView()
-                            }
-                            .hidden()
-                            .navigationBarHidden(true)
-            
         }
         .navigationBarHidden(true)
     }
@@ -87,7 +85,7 @@ struct ResetPwView: View {
         }
         
         // Erstelle die URL
-        guard let url = URL(string: "http://195.201.42.22:8080/api/v1/auth/reset") else {
+        guard let url = URL(string: "http://195.201.42.22:8080/api/v1/auth/reset/accept") else {
             print("Ungültige URL")
             return
         }
@@ -100,7 +98,7 @@ struct ResetPwView: View {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         // Erstelle das JSON-Datenobjekt
-        let json: [String: Any] = ["email": email]
+        let json: [String: Any] = ["pin": confirmationCode, "password": password, "email": email]
         
         // Konvertiere das JSON in Daten
         guard let jsonData = try? JSONSerialization.data(withJSONObject: json) else {
@@ -140,7 +138,6 @@ struct ResetPwView: View {
                             if let responseString = String(data: data, encoding: .utf8) {
                                 print("Antwort:")
                                 print(responseString)
-                                self.showResetTokenView = true
                             }
                         }
         }.resume() // Starte die Anfrage

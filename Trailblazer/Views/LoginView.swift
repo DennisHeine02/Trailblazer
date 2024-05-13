@@ -13,6 +13,7 @@ struct LoginView: View {
     @State private var password = ""
     @State private var loginError = false
     @State private var showRegisterView = false
+    @State private var emailIsSet = false
     @State private var showLoginView = false
     @State private var showResetPwView = false
     
@@ -38,8 +39,16 @@ struct LoginView: View {
                 .padding()
             
             Button("Passwort zurücksetzen"){
-                self.showResetPwView = true
+                if(self.email != ""){
+                    sendResetCode()
+                    self.showResetPwView = true
+                } else {
+                    self.emailIsSet = true
+                }
             }.padding()
+                .alert(isPresented: $emailIsSet) {
+                    Alert(title: Text("Error"), message: Text("Es muss zuerst eine Email eingegeben werden"), dismissButton: .default(Text("OK")))
+                }
             
             HStack {
                 Text("Noch nicht registriert?")
@@ -54,8 +63,13 @@ struct LoginView: View {
             .font(.title2)
             .padding()
             .alert(isPresented: $loginError) {
-                Alert(title: Text("Error"), message: Text("Invalid credentials"), dismissButton: .default(Text("OK")))
+                Alert(title: Text("Error"), message: Text("Email oder Passwort falsch"), dismissButton: .default(Text("OK")))
             }
+            
+            Text("Keine unzugänglichen Grundstücke betreten. TrailBlazer übernimmt keine Haftung!")
+                .font(.system(size: 12))
+                .foregroundColor(Color.gray)
+                .multilineTextAlignment(.center)
             
             NavigationLink(destination: ContentView(authentification: authentification), isActive: $showLoginView) {
                 EmptyView()
@@ -151,6 +165,65 @@ struct LoginView: View {
             }
         }.resume() // Starte die Anfrage
         
+    }
+    
+    func sendResetCode() {
+        // Erstelle die URL
+        guard let url = URL(string: "http://195.201.42.22:8080/api/v1/auth/reset") else {
+            print("Ungültige URL")
+            return
+        }
+        
+        // Erstelle die Anfrage
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        // Setze den Content-Type
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        // Erstelle das JSON-Datenobjekt
+        let json: [String: Any] = ["email": email, "mock": true]
+        
+        // Konvertiere das JSON in Daten
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: json) else {
+            print("Fehler beim Konvertieren der Daten in JSON")
+            return
+        }
+        
+        // Setze den Anfragekörper
+        request.httpBody = jsonData
+        
+        // Führe die Anfrage aus
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            // Überprüfe auf Fehler
+            if let error = error {
+                print("Fehler: \(error)")
+                return
+            }
+            
+            // Überprüfe die Antwort
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Ungültige Antwort")
+                return
+            }
+            
+            // Drucke den Statuscode
+            print("Statuscode: \(httpResponse.statusCode)")
+            
+            // Drucke den Header
+            print("Header:")
+            for (key, value) in httpResponse.allHeaderFields {
+                print("\(key): \(value)")
+            }
+            
+            // Überprüfe den Inhalt der Antwort
+            if let data = data {
+                // Konvertiere die Daten in einen lesbaren String
+                if let responseString = String(data: data, encoding: .utf8) {
+                    print("Antwort:")
+                    print(responseString)
+                }
+            }
+        }.resume() // Starte die Anfrage
     }
     
 }

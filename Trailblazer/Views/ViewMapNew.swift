@@ -14,7 +14,6 @@ struct ViewMapNew: View {
     @State var percent : CGFloat = 31
     @ObservedObject var mapTypeSettings: MapTypeSettings
     @ObservedObject var authentification: AuthentificationToken
-    @State var holes: [MKPolygon] = []
     
     var mapTypeBinding: Binding<MKMapType> {
         Binding<MKMapType>(

@@ -57,7 +57,7 @@ struct MKMapRep: UIViewRepresentable {
     func fetchData(for mapView: MKMapView) {
         Task {
             do {
-                try await getVisitedLocations(latitude: 48.440194182762376, longitude: 8.67894607854444, zoomLevel: 14)
+                try await getVisitedLocations()
             } catch {
                 print("Fetching data gone wrong!: \(error)")
             }
@@ -74,7 +74,7 @@ struct MKMapRep: UIViewRepresentable {
         uiView.addOverlay(bigRect)
     }
     
-    func getVisitedLocations(latitude: Double, longitude: Double, zoomLevel: Int) async throws {
+    func getVisitedLocations() async throws {
         var holes: [MKPolygon] = []
         // Die URL für den Request mit Query-Parametern
         guard var urlComponents = URLComponents(string: "http://195.201.42.22:8080/api/v1/locations/all") else {
@@ -179,7 +179,9 @@ struct MKMapRep: UIViewRepresentable {
         request.setValue("Bearer " + authentification.auth_token, forHTTPHeaderField: "Authorization")
         
         // Erstelle das JSON-Datenobjekt
-        let json: [String: Any] = ["latitude": locationManager.location?.coordinate.latitude, "longitude": locationManager.location?.coordinate.longitude]
+        let json: [String: Any] = ["latitude": locationManager.location!.coordinate.latitude, "longitude": locationManager.location!.coordinate.longitude]
+        
+        print(json)
         
         // Konvertiere das JSON in Daten
         guard let jsonData = try? JSONSerialization.data(withJSONObject: json) else {
@@ -222,9 +224,8 @@ struct MKMapRep: UIViewRepresentable {
                 }
             }
         }.resume() // Starte die Anfrage
-        
     }
-
+    
 }
 
 func startTimer(for mapRep: MKMapRep) {
@@ -237,8 +238,13 @@ func startTimer(for mapRep: MKMapRep) {
     // Erstelle einen Timer, der alle 15 Sekunden die Methode sendLocation() aufruft
     weakMapRep.timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: true) { _ in
         weakMapRep.sendLocation()
-        //weakMapRep.timer?.invalidate() // Timer ungültig machen, um einen ungewollten Retain Cycle zu vermeiden
-        //weakMapRep.timer = nil // Timer auf nil setzen, um ihn freizugeben
+        Task {
+            do {
+                try await weakMapRep.getVisitedLocations()
+            } catch {
+                print("Fetching data gone wrong!: \(error)")
+            }
+        }
     }
 }
 
