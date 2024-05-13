@@ -11,8 +11,11 @@ struct ResetPwView: View {
     
     @State private var email = ""
     @State private var password = ""
+    @State private var repeatPassword = ""
+    @State private var confirmationCode = ""
     @State private var showResetTokenView = false
     @State private var showLoginView = false
+    @State private var passwordError = false
     
     @ObservedObject var authentification: AuthentificationToken
 
@@ -31,8 +34,24 @@ struct ResetPwView: View {
                 .autocapitalization(.none)
                 .padding()
             
+            SecureField("neues Passwort", text: $password)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+            
+            SecureField("neues Passwort wiederholen", text: $repeatPassword)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+            
+            TextField("Bestätigungscode", text: $confirmationCode)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .autocapitalization(.none)
+                .padding()
+            
             Button("Zurücksetzen"){
                 resetPW()
+            }
+            .alert(isPresented: $passwordError) {
+                Alert(title: Text("Error"), message: Text("Passwörter sind nicht gleich"), dismissButton: .default(Text("OK")))
             }
             .font(.title2)
             .padding()
@@ -61,6 +80,11 @@ struct ResetPwView: View {
     
     /// Methode um das Passwort zurückzusetzen
     func resetPW() {
+        
+        if password != repeatPassword {
+            self.passwordError = true
+            return
+        }
         
         // Erstelle die URL
         guard let url = URL(string: "http://195.201.42.22:8080/api/v1/auth/reset") else {
