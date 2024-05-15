@@ -13,6 +13,7 @@ final class MapViewModel: NSObject, ObservableObject {
 
     @Published var mapRegion: MKCoordinateRegion = .init(center: .init(latitude: 48.354612, longitude: 8.961949),
                                                          span: .init(latitudeDelta: 0.040, longitudeDelta: 0.040))
+    @Published var allHoles: [MKPolygon] = []
     
 }
 

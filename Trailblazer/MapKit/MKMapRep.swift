@@ -14,12 +14,8 @@ struct MKMapRep: UIViewRepresentable {
     @ObservedObject var mapVM: MapViewModel
     @Binding var mapType: MKMapType
     @ObservedObject var authentification: AuthentificationToken
-    let latitude: String = "48.440194182762376"
-    let longitude: String = "8.67894607854444"
-    let zoomLevel: String = "14"
     typealias UIViewType = MKMapView
     fileprivate let locationManager: CLLocationManager = CLLocationManager()
-    @State private var allHoles: [MKPolygon] = []
     var timer: Timer?
     
     let germany = [
@@ -43,7 +39,7 @@ struct MKMapRep: UIViewRepresentable {
         locationManager.startUpdatingLocation()
         
         mapView.showsUserLocation = true
-            
+        
         fetchData(for: mapView)
         startTimer(for: self)
         
@@ -57,7 +53,7 @@ struct MKMapRep: UIViewRepresentable {
     func fetchData(for mapView: MKMapView) {
         Task {
             do {
-                try await getVisitedLocations(latitude: 48.440194182762376, longitude: 8.67894607854444, zoomLevel: 14)
+                try await getVisitedLocations()
             } catch {
                 print("Fetching data gone wrong!: \(error)")
             }
@@ -70,21 +66,15 @@ struct MKMapRep: UIViewRepresentable {
         uiView.removeOverlays(uiView.overlays)
         
         // Add new overlays
-        let bigRect = MKPolygon(coordinates: germany, count: germany.count, interiorPolygons: allHoles)
+        let bigRect = MKPolygon(coordinates: germany, count: germany.count, interiorPolygons: mapVM.allHoles)
         uiView.addOverlay(bigRect)
     }
     
-    func getVisitedLocations(latitude: Double, longitude: Double, zoomLevel: Int) async throws {
+    func getVisitedLocations() async throws {
         var holes: [MKPolygon] = []
         // Die URL für den Request mit Query-Parametern
-        guard var urlComponents = URLComponents(string: "http://195.201.42.22:8080/api/v1/locations/all") else {
+        guard let url = URL(string: "http://195.201.42.22:8080/api/v1/locations/all") else {
             print("Ungültige URL")
-            return
-        }
-        
-        // Erstelle die URL aus den URL-Komponenten
-        guard let url = urlComponents.url else {
-            print("Fehler beim Erstellen der URL")
             return
         }
         
@@ -122,6 +112,12 @@ struct MKMapRep: UIViewRepresentable {
                 print("\(key): \(value)")
             }
             
+            if httpResponse.statusCode == 401 {
+                getNewToken()
+                let authToken = "Bearer " + authentification.auth_token
+                request.setValue(authToken, forHTTPHeaderField: "Authorization")
+            }
+            
             // Überprüfe den Inhalt der Antwort
             if let data = data {
                 // Konvertiere die Daten in einen lesbaren String
@@ -150,7 +146,7 @@ struct MKMapRep: UIViewRepresentable {
                             print("Unable to retrieve data from JSON")
                         }
                     }
-                    allHoles = holes
+                    self.mapVM.allHoles = holes
                 }
             }
         }.resume() // Starte die Anfrage
@@ -164,8 +160,14 @@ struct MKMapRep: UIViewRepresentable {
     func sendLocation() {
         print("Sending Location...")
         
-        // Erstelle die URL
-        guard let url = URL(string: "http://195.201.42.22:8080/api/v1/location") else {
+        // Erstelle die URL mit Query-Parametern
+        var urlComponents = URLComponents(string: "http://195.201.42.22:8080/api/v1/location")!
+        urlComponents.queryItems = [
+            URLQueryItem(name: "latitude", value: String(locationManager.location!.coordinate.latitude)),
+            URLQueryItem(name: "longitude", value: String(locationManager.location!.coordinate.longitude))
+        ]
+        
+        guard let url = urlComponents.url else {
             print("Ungültige URL")
             return
         }
@@ -179,7 +181,7 @@ struct MKMapRep: UIViewRepresentable {
         request.setValue("Bearer " + authentification.auth_token, forHTTPHeaderField: "Authorization")
         
         // Erstelle das JSON-Datenobjekt
-        let json: [String: Any] = ["latitude": locationManager.location?.coordinate.latitude, "longitude": locationManager.location?.coordinate.longitude]
+        let json: [String: Any] = [:]
         
         // Konvertiere das JSON in Daten
         guard let jsonData = try? JSONSerialization.data(withJSONObject: json) else {
@@ -222,9 +224,55 @@ struct MKMapRep: UIViewRepresentable {
                 }
             }
         }.resume() // Starte die Anfrage
-        
     }
-
+    
+    func getNewToken() {
+        print("Getting new Token...")
+        let urlComponents = URLComponents(string: "http://195.201.42.22:8080/api/v1/auth/token/refresh")!
+        guard let url = urlComponents.url else {
+            print("Ungültige URL")
+            return
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer " + authentification.auth_token, forHTTPHeaderField: "Authorization")
+        let json: [String: Any] = ["refresh_token": authentification.refresh_token]
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: json) else {
+            print("Fehler beim Konvertieren der Daten in JSON")
+            return
+        }
+        request.httpBody = jsonData
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Fehler: \(error)")
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Ungültige Antwort")
+                return
+            }
+            print("Statuscode: \(httpResponse.statusCode)")
+            print("Header:")
+            for (key, value) in httpResponse.allHeaderFields {
+                print("\(key): \(value)")
+            }
+            if let data = data {
+                if let responseString = String(data: data, encoding: .utf8) {
+                    print("Antwort:")
+                    print(responseString)
+                    if let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                       let token = jsonResponse["token"] as? String,
+                       let refreshToken = jsonResponse["refresh_token"] as? String {
+                        // Speichere den Token und das Refresh-Token
+                        self.authentification.auth_token = token
+                        self.authentification.refresh_token = refreshToken
+                    }
+                }
+            }
+        }.resume() // Starte die Anfrage
+    }
+    
 }
 
 func startTimer(for mapRep: MKMapRep) {
@@ -236,28 +284,13 @@ func startTimer(for mapRep: MKMapRep) {
     
     // Erstelle einen Timer, der alle 15 Sekunden die Methode sendLocation() aufruft
     weakMapRep.timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: true) { _ in
-        // weakMapRep.sendLocation()
-        //weakMapRep.timer?.invalidate() // Timer ungültig machen, um einen ungewollten Retain Cycle zu vermeiden
-        //weakMapRep.timer = nil // Timer auf nil setzen, um ihn freizugeben
+        weakMapRep.sendLocation()
+        Task {
+            do {
+                try await weakMapRep.getVisitedLocations()
+            } catch {
+                print("Fetching data gone wrong!: \(error)")
+            }
+        }
     }
 }
-
-
-
-
-/*
- {"zoomLevel":14,"opacity":0,
- "posUpperLeft":[48.54570549184744,8.876953125],
- "posUpperRight":[48.54570549184744,8.89892578125],
- "posLowerRight":[48.53115701097671,8.89892578125],
- "posLowerLeft":[48.53115701097671,8.876953125],
- "xtile":8596,"ytile":5658}
- 
- let coordsForHole: [CLLocationCoordinate2D] = [
-     CLLocationCoordinate2D(latitude: 48.354450, longitude: 8.941511), // links oben
-     CLLocationCoordinate2D(latitude: 48.354450, longitude: 8.980349), // rechts oben
-     CLLocationCoordinate2D(latitude: 48.331459, longitude: 8.980349), // rechts unten
-     CLLocationCoordinate2D(latitude: 48.331459, longitude: 8.941511)  // links unten
- ]
- let holeOverDennishausen = MKPolygon(coordinates: coordsForHole, count: coordsForHole.count)
- */

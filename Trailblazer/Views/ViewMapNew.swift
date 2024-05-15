@@ -20,6 +20,7 @@ struct ViewMapNew: View {
     @State private var isShowingLogin = false
     @ObservedObject var mapTypeSettings: MapTypeSettings
     @ObservedObject var authentification: AuthentificationToken
+
     @State var holes: [MKPolygon] = []
     @State private var dePercent: CGFloat = 0
     
