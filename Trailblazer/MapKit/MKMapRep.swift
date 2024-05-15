@@ -294,23 +294,3 @@ func startTimer(for mapRep: MKMapRep) {
         }
     }
 }
-
-
-
-
-/*
- {"zoomLevel":14,"opacity":0,
- "posUpperLeft":[48.54570549184744,8.876953125],
- "posUpperRight":[48.54570549184744,8.89892578125],
- "posLowerRight":[48.53115701097671,8.89892578125],
- "posLowerLeft":[48.53115701097671,8.876953125],
- "xtile":8596,"ytile":5658}
- 
- let coordsForHole: [CLLocationCoordinate2D] = [
- CLLocationCoordinate2D(latitude: 48.354450, longitude: 8.941511), // links oben
- CLLocationCoordinate2D(latitude: 48.354450, longitude: 8.980349), // rechts oben
- CLLocationCoordinate2D(latitude: 48.331459, longitude: 8.980349), // rechts unten
- CLLocationCoordinate2D(latitude: 48.331459, longitude: 8.941511)  // links unten
- ]
- let holeOverDennishausen = MKPolygon(coordinates: coordsForHole, count: coordsForHole.count)
- */
