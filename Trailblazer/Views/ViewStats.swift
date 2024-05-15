@@ -9,14 +9,15 @@ import SwiftUI
 
 // Erweiterung für Double zum Runden auf n Nachkommastellen
 extension Double {
+    
     func rounded(toPlaces places: Int) -> Double {
         let divisor = pow(10.0, Double(places))
         return (self * divisor).rounded() / divisor
     }
     
     func toStringWithDecimalPlaces(_ places: Int) -> String {
-            return String(format: "%.\(places)f", self)
-        }
+        return String(format: "%.\(places)f", self)
+    }
 }
 
 extension CGFloat {
@@ -44,6 +45,7 @@ struct ViewStats: View {
 }
 
 struct ShowStatsView: View {
+    
     @State var bundeslandStats: [(String, Double)] = [
         ("Baden-Württemberg", 0),
         ("Bayern", 0),
@@ -111,6 +113,7 @@ struct ShowStatsView: View {
         .padding()
     }
     
+    /// Methode um die Stats eines User abzurufen
     func getStats() {
         
         guard let url = URL(string: "http://195.201.42.22:8080/api/v1/stats") else {

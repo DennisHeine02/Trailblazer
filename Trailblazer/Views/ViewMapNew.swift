@@ -15,6 +15,7 @@ extension CGFloat {
 }
 
 struct ViewMapNew: View {
+    
     @StateObject private var mapVM = MapViewModel()
     @State private var isShowingLogin = false
     @ObservedObject var mapTypeSettings: MapTypeSettings
@@ -52,6 +53,7 @@ struct ViewMapNew: View {
         }
     }
     
+    /// Methode um die Stats eines User abzurufen
     func getStats() {
         
         guard let url = URL(string: "http://195.201.42.22:8080/api/v1/stats") else {

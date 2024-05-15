@@ -7,7 +7,30 @@
 
 import SwiftUI
 
-struct Friendd: Codable, Identifiable {
+enum UserItem: Identifiable {
+    case friend(Friend)
+    case invite(Invites)
+    
+    var id: String {
+        switch self {
+        case .friend(let friend):
+            return friend.id
+        case .invite(let invite):
+            return invite.id
+        }
+    }
+    
+    var email: String {
+        switch self {
+        case .friend(let friend):
+            return friend.email
+        case .invite(let invite):
+            return invite.email
+        }
+    }
+}
+
+struct Friend: Codable, Identifiable {
     var uuid: String
     var email: String
     var acceptedAt: String
@@ -35,11 +58,13 @@ struct ViewProfile: View {
     @State private var username = "test_username"
     @State private var email = "test_email"
     @State private var nameToAdd = ""
-    @State var friendsList: [Friendd] = []
+    @State var friendsList: [Friend] = []
     @State var inviteList: [Invites] = []
     @State private var showLoginView = false
     @State private var showChangePwView = false
     @State private var refreshTrigger = false
+    
+    @State private var combinedList: [UserItem] = []
     
     @ObservedObject var authentification: AuthentificationToken
     
@@ -124,8 +149,7 @@ struct ViewProfile: View {
                     .font(.headline)
                     .padding(.top, 20)
                 
-                //New Invite list
-                List($inviteList) { invite in
+                List(combinedList) { item in
                     HStack {
                         Image(systemName: "person.circle.fill")
                             .resizable()
@@ -134,86 +158,65 @@ struct ViewProfile: View {
                             .clipShape(Circle())
                         
                         VStack(alignment: .leading) {
-                            
-                            Text(invite.id)
+                            Text(item.id)
                                 .font(.headline)
-                            Text("invite \(invite.email)")
+                            Text("\(item.email)")
                                 .font(.subheadline)
                             
-                        }
-                        
-                        Button(action: {
-                            acceptDenyFriend(accept: true, withID: invite.id)
-                        }) {
-                            Image(systemName: "checkmark")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundColor(.green)
-                                .frame(width: 15, height: 20) // Adjust the size of the button
-                                .padding(15) // Adjust the padding of the button
-                                .background(systemColor)
-                                .clipShape(Circle())
-                        }
-                        .padding(.leading, 5)
-                        
-                        Button(action: {
-                            acceptDenyFriend(accept: false, withID: invite.id)
-                        }) {
-                            Image(systemName: "xmark")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundColor(.red)
-                                .frame(width: 15, height: 20) // Adjust the size of the button
-                                .padding(15) // Adjust the padding of the button
-                                .background(systemColor)
-                                .clipShape(Circle())
-                        }
-                        .padding(.leading, 5)
-                        
-                        Spacer()
-                    }
-                    .padding(.vertical, 8)
-                }
-                
-                //New Friend list
-                List($friendsList) { friend in
-                    HStack {
-                        Image(systemName: "person.circle.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 30, height: 30)
-                            .clipShape(Circle())
-                        
-                        VStack(alignment: .leading) {
-                            
-                            Text(friend.id)
-                                .font(.headline)
-                            Text("Email \(friend.email)")
-                                .font(.subheadline)
-                            
-                            HStack{
-                                ProgressBar(width: 150, height: 15, percent: CGFloat(30), color1: Color(.red), color2: Color(.orange))
-                                
-                                Text("30%")
-                                    .font(.system(size: 10, weight: .bold))
+                            if case .friend(let friend) = item {
+                                HStack {
+                                    ProgressBar(width: 150, height: 15, percent: CGFloat(friend.stats), color1: Color(.red), color2: Color(.orange))
+                                    Text("\(Int(friend.stats))%")
+                                        .font(.system(size: 10, weight: .bold))
+                                }
                             }
                         }
                         
-                        Button(action: {
-                            deleteFriend(withID: friend.id)
-                            getFriends()
-                            self.refreshTrigger.toggle()
-                        }) {
-                            Image(systemName: "trash")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundColor(.red)
-                                .frame(width: 15, height: 20) // Adjust the size of the button
-                                .padding(15) // Adjust the padding of the button
-                                .background(systemColor)
-                                .clipShape(Circle())
+                        if case .invite(let invite) = item {
+                            Button(action: {
+                                acceptDenyFriend(accept: true, withID: invite.id)
+                            }) {
+                                Image(systemName: "checkmark")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .foregroundColor(.green)
+                                    .frame(width: 15, height: 20)
+                                    .padding(15)
+                                    .background(systemColor)
+                                    .clipShape(Circle())
+                            }
+                            .padding(.leading, 5)
+                            
+                            Button(action: {
+                                acceptDenyFriend(accept: false, withID: invite.id)
+                            }) {
+                                Image(systemName: "xmark")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .foregroundColor(.red)
+                                    .frame(width: 15, height: 20)
+                                    .padding(15)
+                                    .background(systemColor)
+                                    .clipShape(Circle())
+                            }
+                            .padding(.leading, 5)
+                        } else if case .friend(let friend) = item {
+                            Button(action: {
+                                deleteFriend(withID: friend.id)
+                                getFriends()
+                                self.refreshTrigger.toggle()
+                            }) {
+                                Image(systemName: "trash")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .foregroundColor(.red)
+                                    .frame(width: 15, height: 20)
+                                    .padding(15)
+                                    .background(systemColor)
+                                    .clipShape(Circle())
+                            }
+                            .padding(.leading, 30)
                         }
-                        .padding(.leading, 30)
                         
                         Spacer()
                     }
@@ -247,19 +250,18 @@ struct ViewProfile: View {
                     }
                     .padding(.trailing, 20) // Add padding to the right of the button
                     .padding(.bottom, 20) // Add padding to the bottom of the button
-            }
-            .edgesIgnoringSafeArea(.all)
                 }
-            .id(refreshTrigger)
-            
-            
-                
-            }.onAppear {
-                getFriends()
-                getUser()
-                getFriendInvites()
+                .edgesIgnoringSafeArea(.all)
             }
-            
+        }
+        .id(refreshTrigger)
+        .onAppear {
+            getFriends()
+            getUser()
+            getFriendInvites()
+            combinedList = inviteList.map(UserItem.invite) + friendsList.map(UserItem.friend)
+        }
+        
     }
     
     /// Methode um einen Freund aus seiner Freundesliste zu löschen
@@ -299,6 +301,9 @@ struct ViewProfile: View {
                 let responseString = String(data: responseData, encoding: .utf8)
                 print("Response data: \(responseString ?? "")")
             }
+            self.refreshTrigger.toggle()
+            getFriends()
+            getFriendInvites()
         }.resume() // Starten Sie die Anfrage
     }
     
@@ -402,11 +407,11 @@ struct ViewProfile: View {
             if let data = data {
                 // Konvertiere die Daten in eine Liste von Freunden
                 do {
-                    let friendss = try JSONDecoder().decode([Friendd].self, from: data)
+                    let friendss = try JSONDecoder().decode([Friend].self, from: data)
                     self.friendsList = friendss
                 } catch {
-                        print("Fehler beim Parsen der JSON-Daten: \(error)")
-                    }
+                    print("Fehler beim Parsen der JSON-Daten: \(error)")
+                }
             }
         }.resume() // Starten Sie die Anfrage
     }
@@ -455,8 +460,8 @@ struct ViewProfile: View {
                     let invites = try JSONDecoder().decode([Invites].self, from: data)
                     self.inviteList = invites
                 } catch {
-                        print("Fehler beim Parsen der JSON-Daten: \(error)")
-                    }
+                    print("Fehler beim Parsen der JSON-Daten: \(error)")
+                }
             }
         }.resume() // Starten Sie die Anfrage
     }
@@ -517,9 +522,12 @@ struct ViewProfile: View {
                     print(responseString)
                 }
             }
+            getFriends()
+            getFriendInvites()
+            self.refreshTrigger.toggle()
         }.resume() // Starte die Anfrage
     }
-
+    
     /// Methode um Freundschaftsanfrage zu versenden
     func sendFriendRequest(email emailID: String) {
         // Erstelle die URL
@@ -557,6 +565,7 @@ struct ViewProfile: View {
             }
         }.resume() // Starten Sie die Anfrage
     }
+    
     /// Methode um sich als Nutzer abzumelden
     func logout() {
         
@@ -622,7 +631,7 @@ struct ViewProfile: View {
         
         do {
             // Parse die JSON-Daten in ein Array von Friend-Objekten
-            let friends = try JSONDecoder().decode([Friendd].self, from: data)
+            let friends = try JSONDecoder().decode([Friend].self, from: data)
             // Extrahiere die UUIDs und gib sie zurück
             return friends.map { $0.uuid }
         } catch {
