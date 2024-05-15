@@ -236,7 +236,7 @@ func startTimer(for mapRep: MKMapRep) {
     
     // Erstelle einen Timer, der alle 15 Sekunden die Methode sendLocation() aufruft
     weakMapRep.timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: true) { _ in
-        weakMapRep.sendLocation()
+        // weakMapRep.sendLocation()
         //weakMapRep.timer?.invalidate() // Timer ungültig machen, um einen ungewollten Retain Cycle zu vermeiden
         //weakMapRep.timer = nil // Timer auf nil setzen, um ihn freizugeben
     }

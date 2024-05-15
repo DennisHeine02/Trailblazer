@@ -27,6 +27,7 @@
 		CDA7CC9A2BA9039A00078822 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA7CC992BA9039A00078822 /* ContentView.swift */; };
 		CDA7CC9C2BA9039B00078822 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDA7CC9B2BA9039B00078822 /* Assets.xcassets */; };
 		CDA7CC9F2BA9039B00078822 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDA7CC9E2BA9039B00078822 /* Preview Assets.xcassets */; };
+		CDC399422BE9197F0061E755 /* Example.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC399412BE9197F0061E755 /* Example.swift */; };
 		CDD2EFD92BAA3908008D9422 /* ContenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD2EFD82BAA3908008D9422 /* ContenViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +53,7 @@
 		CDA7CC992BA9039A00078822 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		CDA7CC9B2BA9039B00078822 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CDA7CC9E2BA9039B00078822 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		CDC399412BE9197F0061E755 /* Example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Example.swift; sourceTree = "<group>"; };
 		CDD2EFD82BAA3908008D9422 /* ContenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContenViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -87,6 +89,7 @@
 			children = (
 				CD04FCC82BCEB18900041725 /* MKMapRep.swift */,
 				CD04FCCA2BCEB1DD00041725 /* MapViewModel.swift */,
+				CDC399412BE9197F0061E755 /* Example.swift */,
 			);
 			path = MapKit;
 			sourceTree = "<group>";
@@ -216,6 +219,7 @@
 				CD04FCC42BBF52BF00041725 /* ViewSettings.swift in Sources */,
 				CD6D8B162BD8393C00675366 /* RegisterView.swift in Sources */,
 				CD8760872BD92AC600F51B31 /* MapTypeSettings.swift in Sources */,
+				CDC399422BE9197F0061E755 /* Example.swift in Sources */,
 				CDA7CC9A2BA9039A00078822 /* ContentView.swift in Sources */,
 				0AF7CF582BDC1375004A60D0 /* AuthentificationToken.swift in Sources */,
 				CD51D4902BDFDCA60007991C /* ResetPwView.swift in Sources */,
