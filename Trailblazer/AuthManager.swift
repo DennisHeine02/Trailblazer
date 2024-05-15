@@ -55,7 +55,7 @@ class AuthManager: ObservableObject {
         }.resume() // Starte die Anfrage
     }
     
-    func handleUnauthorized(completion: @escaping (Bool, String?) -> Void) {
+    /*func handleUnauthorized(completion: @escaping (Bool, String?) -> Void) {
         // Hier wird aufgerufen, wenn eine Anfrage mit einem 401-Statuscode abgelehnt wurde
         // Du kannst hier den Token erneuern und die ursprüngliche Anfrage erneut senden
         
@@ -69,5 +69,5 @@ class AuthManager: ObservableObject {
                 completion(false, nil)
             }
         }
-    }
+    }*/
 }

@@ -13,6 +13,7 @@ struct RegisterView: View {
     @State private var firstname = ""
     @State private var lastname = ""
     @State private var email = ""
+    @State private var username = ""
     @State private var password1 = ""
     @State private var password2 = ""
     @State private var loginError = false
@@ -27,15 +28,22 @@ struct RegisterView: View {
             
             Text("Register")
             
-            TextField("Vorname", text: $firstname)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            
-            TextField("Nachname", text: $lastname)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
+            HStack{
+                TextField("Vorname", text: $firstname)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+                
+                TextField("Nachname", text: $lastname)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+            }
             
             TextField("Email", text: $email)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .autocapitalization(.none)
+                .padding()
+            
+            TextField("Benutername", text: $username)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .autocapitalization(.none)
                 .padding()
@@ -83,7 +91,7 @@ struct RegisterView: View {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         // Erstelle das JSON-Datenobjekt
-        let json: [String: Any] = ["email": email, "password": password1, "firstname": firstname, "lastname": lastname]
+        let json: [String: Any] = ["email": email, "username": username, "password": password1, "firstname": firstname, "lastname": lastname]
         
         // Konvertiere das JSON in Daten
         guard let jsonData = try? JSONSerialization.data(withJSONObject: json) else {
