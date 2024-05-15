@@ -17,6 +17,16 @@ struct Friendd: Codable, Identifiable {
     var mail: String { email }
 }
 
+struct Invites: Codable, Identifiable {
+    var uuid: String
+    var email: String
+    var sendAt: String
+    
+    var id: String { uuid }
+    var mail: String { email }
+    
+}
+
 
 struct ViewProfile: View {
     
@@ -26,7 +36,7 @@ struct ViewProfile: View {
     @State private var email = "test_email"
     @State private var nameToAdd = ""
     @State var friendsList: [Friendd] = []
-    @State var inviteList = ""
+    @State var inviteList: [Invites] = []
     @State private var showLoginView = false
     @State private var showChangePwView = false
     @State private var refreshTrigger = false
@@ -113,6 +123,57 @@ struct ViewProfile: View {
                 Text("Freunde")
                     .font(.headline)
                     .padding(.top, 20)
+                
+                //New Invite list
+                List($inviteList) { invite in
+                    HStack {
+                        Image(systemName: "person.circle.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 30, height: 30)
+                            .clipShape(Circle())
+                        
+                        VStack(alignment: .leading) {
+                            
+                            Text(invite.id)
+                                .font(.headline)
+                            Text("invite \(invite.email)")
+                                .font(.subheadline)
+                            
+                        }
+                        
+                        Button(action: {
+                            acceptDenyFriend(accept: true, withID: invite.id)
+                        }) {
+                            Image(systemName: "checkmark")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .foregroundColor(.green)
+                                .frame(width: 15, height: 20) // Adjust the size of the button
+                                .padding(15) // Adjust the padding of the button
+                                .background(systemColor)
+                                .clipShape(Circle())
+                        }
+                        .padding(.leading, 5)
+                        
+                        Button(action: {
+                            acceptDenyFriend(accept: false, withID: invite.id)
+                        }) {
+                            Image(systemName: "xmark")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .foregroundColor(.red)
+                                .frame(width: 15, height: 20) // Adjust the size of the button
+                                .padding(15) // Adjust the padding of the button
+                                .background(systemColor)
+                                .clipShape(Circle())
+                        }
+                        .padding(.leading, 5)
+                        
+                        Spacer()
+                    }
+                    .padding(.vertical, 8)
+                }
                 
                 //New Friend list
                 List($friendsList) { friend in
@@ -389,12 +450,13 @@ struct ViewProfile: View {
             
             // Überprüfe den Inhalt der Antwort
             if let data = data {
-                // Konvertiere die Daten in einen lesbaren String
-                if let responseString = String(data: data, encoding: .utf8) {
-                    print("Antwort:")
-                    print(responseString)
-                    self.inviteList = responseString
-                }
+                // Konvertiere die Daten in eine Liste von Freunden
+                do {
+                    let invites = try JSONDecoder().decode([Invites].self, from: data)
+                    self.inviteList = invites
+                } catch {
+                        print("Fehler beim Parsen der JSON-Daten: \(error)")
+                    }
             }
         }.resume() // Starten Sie die Anfrage
     }

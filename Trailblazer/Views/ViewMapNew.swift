@@ -47,6 +47,8 @@ struct ViewMapNew: View {
             }
             .padding(.leading, 20)
             .padding(.bottom, 20)
+        }.onAppear {
+            getStats()
         }
     }
     
@@ -88,6 +90,7 @@ struct ViewMapNew: View {
                         
                         DispatchQueue.main.async {
                             self.dePercent = CGFloat(DE.rounded(toPlaces: 3))
+                            print("hello")
                         }
                     } else {
                         print("Fehler beim Parsen der JSON-Daten")
