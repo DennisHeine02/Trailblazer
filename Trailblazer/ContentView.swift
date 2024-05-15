@@ -20,7 +20,7 @@ struct ContentView: View {
                     Image(systemName: "map")
                     Text("Map")
                 }
-            ViewStats()
+            ViewStats(authentification: authentification)
                 .tabItem {
                     Image(systemName: "list.bullet")
                     Text("Stats")
