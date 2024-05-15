@@ -12,7 +12,7 @@ struct Friend: Identifiable, Decodable {
     var id = UUID()
     var name: String
     var email: String
-    var picture : String?
+    var picture : Data?
     var percent: Int
 }
 
@@ -28,8 +28,8 @@ struct ViewProfile: View {
     @State private var showLoginView = false
     @State private var showChangePwView = false
     @State var friends: [Friend] = [
-        Friend(name: "Freund 1", email: "freund1@example.com", picture: "ProfilePicture", percent: 10),
-        Friend(name: "Freund 2", email: "freund2@example.com", picture: "DennisProfilePicture", percent: 69),
+        Friend(name: "Freund 1", email: "freund1@example.com", percent: 10),
+        Friend(name: "Freund 2", email: "freund2@example.com", percent: 69),
         Friend(name: "Freund 3", email: "freund3@example.com", percent: 31),
         Friend(name: "Freund 3", email: "freund3@example.com", percent: 31),
         Friend(name: "Freund 3", email: "freund3@example.com", percent: 31),
@@ -38,6 +38,7 @@ struct ViewProfile: View {
         Friend(name: "Freund 3", email: "freund3@example.com", percent: 31),
         Friend(name: "Freund 3", email: "freund3@example.com", percent: 31)
     ]
+    @State private var ownProfilePicture: Data?
     
     @ObservedObject var authentification: AuthentificationToken
     
@@ -45,16 +46,31 @@ struct ViewProfile: View {
         VStack {
             HStack {
                 
-                Image("ProfilePicture") // Load image from assets
-                    .resizable() // Make the image resizable
-                    .scaledToFill() // Scale the image to fill the circular frame
-                    .frame(width: 50, height: 50)
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(systemColor)
-                    .clipShape(Circle())
-                    .padding()
-                    .aspectRatio(contentMode: .fit) // Maintain the aspect ratio
+                if let ownProfilePicture = ownProfilePicture,
+                   let uiImage = UIImage(data: ownProfilePicture) {
+                    Image(uiImage: uiImage)
+                        .resizable() // Make the image resizable
+                        .scaledToFill() // Scale the image to fill the circular frame
+                        .frame(width: 50, height: 50)
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(systemColor)
+                        .clipShape(Circle())
+                        .padding()
+                        .aspectRatio(contentMode: .fit)
+                } else {
+                    Image("ProfilePicture") // Load image from assets
+                        .resizable() // Make the image resizable
+                        .scaledToFill() // Scale the image to fill the circular frame
+                        .frame(width: 50, height: 50)
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(systemColor)
+                        .clipShape(Circle())
+                        .padding()
+                        .aspectRatio(contentMode: .fit)
+                }
+
                 
                 VStack(alignment: .leading) {
                     Text(self.username)
@@ -66,6 +82,9 @@ struct ViewProfile: View {
                 Spacer()
             }
             .padding(.top, 60)
+            .onAppear{
+                loadOwnPicture()
+            }
             
             HStack(spacing: 20) { // Add spacing between buttons
                 
@@ -131,9 +150,10 @@ struct ViewProfile: View {
                 List {
                     ForEach(friends) { friend in
                         HStack {
-                            if let imageName = friend.picture,
-                               let image = UIImage(named: imageName) {
-                                Image(uiImage: image)
+                            
+                            if let profilePicture = friend.picture,
+                               let uiImage = UIImage(data: profilePicture) {
+                                Image(uiImage: uiImage)
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 30, height: 30)
@@ -178,6 +198,9 @@ struct ViewProfile: View {
                             Spacer()
                         }
                         .padding(.vertical, 8)
+                        .onAppear{
+                            loadProfilePictureByUUID(uuid: friend.id)
+                        }
                     }
                 }
                 
@@ -409,6 +432,8 @@ struct ViewProfile: View {
                     print("Antwort:")
                     print(responseString)
                     self.showLoginView = true
+                    self.authentification.auth_token = ""
+                    self.authentification.refresh_token = ""
                 }
             }
         }.resume() // Starte die Anfrage
@@ -420,6 +445,104 @@ struct ViewProfile: View {
         if let index = friends.firstIndex(where: { $0.id == friend.id }) {
             friends.remove(at: index)
         }
+    }
+    
+    /// Abrufen des eigenen Profilbildes
+    func loadOwnPicture() {
+        guard let url = URL(string: "http://195.201.42.22:8080/api/v1/files/profile/picture") else {
+            print("Ungültige URL")
+            return
+        }
+        
+        // Erstellen Sie die Anfrage
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        // Setzen Sie den Content-Type
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        // Fügen Sie den Authorization-Header hinzu
+        let authToken = "Bearer " + authentification.auth_token
+        request.setValue(authToken, forHTTPHeaderField: "Authorization")
+        
+        // Führen Sie die Anfrage aus
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            // Überprüfen Sie auf Fehler
+            if let error = error {
+                print("Fehler: \(error)")
+                return
+            }
+            
+            // Überprüfen Sie die Antwort
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Ungültige Antwort")
+                return
+            }
+            
+            // Drucken Sie den Statuscode
+            print("Statuscode: \(httpResponse.statusCode)")
+            
+            // Überprüfe den Inhalt der Antwort
+            if let data = data {
+                // Konvertiere die Daten in einen lesbaren String
+                DispatchQueue.main.async {
+                    self.ownProfilePicture = data
+                }
+            } else {
+                print("Error fetching own profile picture, \(error?.localizedDescription ?? "Unknown error")")
+            }
+        }.resume() // Starten Sie die Anfrage
+    }
+    
+    /// Methode zum abrufen des Profilbilds eines Freundes
+    /// - Parameter uuid: UUID des Nutzers, von dem man das Profilbild abrufen möchte
+    func loadProfilePictureByUUID(uuid: UUID){
+        guard let url = URL(string: "http://195.201.42.22:8080/api/v1/files/profile/\(uuid)/picture") else {
+            print("Ungültige URL")
+            return
+        }
+        print(url)
+        
+        // Erstellen Sie die Anfrage
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        // Setzen Sie den Content-Type
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        // Fügen Sie den Authorization-Header hinzu
+        let authToken = "Bearer " + authentification.auth_token
+        request.setValue(authToken, forHTTPHeaderField: "Authorization")
+        
+        // Führen Sie die Anfrage aus
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            // Überprüfen Sie auf Fehler
+            if let error = error {
+                print("Fehler: \(error)")
+                return
+            }
+            
+            // Überprüfen Sie die Antwort
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Ungültige Antwort")
+                return
+            }
+            
+            // Drucken Sie den Statuscode
+            print("Statuscode: \(httpResponse.statusCode)")
+            
+            // Überprüfe den Inhalt der Antwort
+            if let data = data {
+                // Konvertiere die Daten in einen lesbaren String
+                DispatchQueue.main.async {
+                    if let index = self.friends.firstIndex(where: {$0.id == uuid}){
+                        self.friends[index].picture = data
+                    }
+                }
+            } else {
+                print("Error fetching own profile picture, \(error?.localizedDescription ?? "Unknown error")")
+            }
+        }.resume() // Starten Sie die Anfrage
     }
 }
 
