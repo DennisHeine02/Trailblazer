@@ -28,18 +28,39 @@ enum UserItem: Identifiable {
             return invite.email
         }
     }
+    
+    var picture: Data? {
+            // Implement the getter to return the picture value
+            get {
+                switch self {
+                case .friend(let friend):
+                    return friend.picture
+                case .invite(let invite):
+                    return invite.picture
+                }
+            }
+            // Implement the setter to set the picture value
+            set {
+                switch self {
+                case .friend(var friend):
+                    friend.picture = newValue
+                case .invite(var invite):
+                    invite.picture = newValue
+                }
+            }
+        }
 }
 
 struct Friend: Codable, Identifiable {
     var uuid: String
     var email: String
     var picture : Data?
-    var percent: Int
     var acceptedAt: String
     var stats: Double
     
     var id: String { uuid }
     var mail: String { email }
+    var pic: Data? { picture }
 }
 
 struct Invites: Codable, Identifiable {
@@ -50,6 +71,7 @@ struct Invites: Codable, Identifiable {
     
     var id: String { uuid }
     var mail: String { email }
+    var pic: Data? { picture }
     
 }
 
@@ -252,7 +274,7 @@ struct ViewProfile: View {
                     }
                     .padding(.vertical, 8)
                     .onAppear{
-                      loadProfilePictureByUUID(uuid: friend.id)
+                      loadProfilePictureByUUID(uuid: item.id)
                     }
                 }
                 
@@ -440,8 +462,8 @@ struct ViewProfile: View {
             if let data = data {
                 // Konvertiere die Daten in eine Liste von Freunden
                 do {
-                    let friendss = try JSONDecoder().decode([Friend].self, from: data)
-                    self.friendsList = friendss
+                    let friends = try JSONDecoder().decode([Friend].self, from: data)
+                    self.friendsList = friends
                 } catch {
                     print("Fehler beim Parsen der JSON-Daten: \(error)")
                 }
@@ -724,7 +746,7 @@ struct ViewProfile: View {
     
     /// Methode zum abrufen des Profilbilds eines Freundes
     /// - Parameter uuid: UUID des Nutzers, von dem man das Profilbild abrufen möchte
-    func loadProfilePictureByUUID(uuid: UUID){
+    func loadProfilePictureByUUID(uuid: String){
         guard let url = URL(string: "http://195.201.42.22:8080/api/v1/files/profile/\(uuid)/picture") else {
             print("Ungültige URL")
             return
@@ -763,8 +785,8 @@ struct ViewProfile: View {
             if let data = data {
                 // Konvertiere die Daten in einen lesbaren String
                 DispatchQueue.main.async {
-                    if let index = self.friends.firstIndex(where: {$0.id == uuid}){
-                        self.friends[index].picture = data
+                    if let index = self.combinedList.firstIndex(where: {$0.id == uuid}){
+                        self.combinedList[index].picture = data
                     }
                 }
             } else {
