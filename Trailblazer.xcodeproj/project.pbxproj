@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A1611022BF6AE18001EBC04 /* ViewAchievements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1611012BF6AE18001EBC04 /* ViewAchievements.swift */; };
 		0A9150CE2BF4C79B00554D37 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9150CD2BF4C79B00554D37 /* AuthManager.swift */; };
 		0AF7CF582BDC1375004A60D0 /* AuthentificationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF7CF572BDC1375004A60D0 /* AuthentificationToken.swift */; };
 		CD04FCBB2BBEC1B200041725 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04FCBA2BBEC1B200041725 /* LoginView.swift */; };
@@ -33,6 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A1611012BF6AE18001EBC04 /* ViewAchievements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ViewAchievements.swift; path = ../../../Trailblazer/Trailblazer/Views/ViewAchievements.swift; sourceTree = "<group>"; };
 		0A9150CD2BF4C79B00554D37 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		0AF7CF572BDC1375004A60D0 /* AuthentificationToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthentificationToken.swift; sourceTree = "<group>"; };
 		CD04FCBA2BBEC1B200041725 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 				CD51D48F2BDFDCA60007991C /* ResetPwView.swift */,
 				CD51D4932BE017560007991C /* ResetTokenView.swift */,
 				CD51D4952BE01B540007991C /* ChangePwView.swift */,
+				0A1611012BF6AE18001EBC04 /* ViewAchievements.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -238,6 +241,7 @@
 				CD04FCC22BBF52B100041725 /* ViewProfile.swift in Sources */,
 				CD8760812BD83E4000F51B31 /* ViewMapOld.swift in Sources */,
 				CD8760822BD83E4000F51B31 /* ViewMapNew.swift in Sources */,
+				0A1611022BF6AE18001EBC04 /* ViewAchievements.swift in Sources */,
 				CDA7CC982BA9039A00078822 /* TrailblazerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

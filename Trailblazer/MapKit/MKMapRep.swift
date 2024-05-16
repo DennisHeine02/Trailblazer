@@ -116,6 +116,7 @@ struct MKMapRep: UIViewRepresentable {
                 getNewToken()
                 let authToken = "Bearer " + authentification.auth_token
                 request.setValue(authToken, forHTTPHeaderField: "Authorization")
+                return
             }
             
             // Überprüfe den Inhalt der Antwort

@@ -18,22 +18,27 @@ struct ContentView: View {
             ViewMapNew(mapTypeSettings: mapTypeSettings, authentification: authentification)
                 .tabItem {
                     Image(systemName: "map")
-                    Text("Map")
+                    Text("Karte")
                 }
             ViewStats(authentification: authentification)
                 .tabItem {
                     Image(systemName: "list.bullet")
-                    Text("Stats")
+                    Text("Statistik")
+                }
+            ViewAchievements(authentification: authentification)
+                .tabItem {
+                    Image(systemName: "trophy")
+                    Text("Erfolge")
                 }
             ViewProfile(authentification: authentification)
                 .tabItem {
                     Image(systemName: "person")
-                    Text("Profile")
+                    Text("Profil")
                 }
             ViewSettings(mapTypeSettings: mapTypeSettings)
                 .tabItem {
                     Image(systemName: "gear")
-                    Text("Settings")
+                    Text("Einstellungen")
                 }
         }.edgesIgnoringSafeArea(.all)
             .navigationBarHidden(true)
