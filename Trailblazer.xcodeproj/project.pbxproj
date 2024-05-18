@@ -18,7 +18,6 @@
 		CD04FCC92BCEB18900041725 /* MKMapRep.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04FCC82BCEB18900041725 /* MKMapRep.swift */; };
 		CD04FCCB2BCEB1DD00041725 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04FCCA2BCEB1DD00041725 /* MapViewModel.swift */; };
 		CD51D4902BDFDCA60007991C /* ResetPwView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD51D48F2BDFDCA60007991C /* ResetPwView.swift */; };
-		CD51D4942BE017560007991C /* ResetTokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD51D4932BE017560007991C /* ResetTokenView.swift */; };
 		CD51D4962BE01B540007991C /* ChangePwView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD51D4952BE01B540007991C /* ChangePwView.swift */; };
 		CD6D8B162BD8393C00675366 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6D8B152BD8393C00675366 /* RegisterView.swift */; };
 		CD8530DD2BD7D67F00FCE522 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8530DC2BD7D67F00FCE522 /* ProgressBar.swift */; };
@@ -45,7 +44,6 @@
 		CD04FCC82BCEB18900041725 /* MKMapRep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKMapRep.swift; sourceTree = "<group>"; };
 		CD04FCCA2BCEB1DD00041725 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		CD51D48F2BDFDCA60007991C /* ResetPwView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPwView.swift; sourceTree = "<group>"; };
-		CD51D4932BE017560007991C /* ResetTokenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetTokenView.swift; sourceTree = "<group>"; };
 		CD51D4952BE01B540007991C /* ChangePwView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePwView.swift; sourceTree = "<group>"; };
 		CD6D8B152BD8393C00675366 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		CD8530DC2BD7D67F00FCE522 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
@@ -82,7 +80,6 @@
 				CD04FCC12BBF52B100041725 /* ViewProfile.swift */,
 				CD04FCC32BBF52BF00041725 /* ViewSettings.swift */,
 				CD51D48F2BDFDCA60007991C /* ResetPwView.swift */,
-				CD51D4932BE017560007991C /* ResetTokenView.swift */,
 				CD51D4952BE01B540007991C /* ChangePwView.swift */,
 				0A1611012BF6AE18001EBC04 /* ViewAchievements.swift */,
 			);
@@ -233,7 +230,6 @@
 				CD04FCC02BBF528D00041725 /* ViewStats.swift in Sources */,
 				0A9150CE2BF4C79B00554D37 /* AuthManager.swift in Sources */,
 				CD04FCCB2BCEB1DD00041725 /* MapViewModel.swift in Sources */,
-				CD51D4942BE017560007991C /* ResetTokenView.swift in Sources */,
 				CD04FCC92BCEB18900041725 /* MKMapRep.swift in Sources */,
 				CD04FCC62BBFE4DE00041725 /* Präsentation.swift in Sources */,
 				CD8530DD2BD7D67F00FCE522 /* ProgressBar.swift in Sources */,

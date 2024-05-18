@@ -124,7 +124,7 @@ struct MKMapRep: UIViewRepresentable {
                 // Konvertiere die Daten in einen lesbaren String
                 if let responseString = String(data: data, encoding: .utf8) {
                     print("Antwort:")
-                    print(responseString)
+                    //print(responseString)
                     
                     guard let arrayData = responseString.data(using: .utf8),
                           let parsedArray = try? JSONSerialization.jsonObject(with: arrayData, options: []) as? [[String: Any]] else {
@@ -221,7 +221,7 @@ struct MKMapRep: UIViewRepresentable {
                 // Konvertiere die Daten in einen lesbaren String
                 if let responseString = String(data: data, encoding: .utf8) {
                     print("Antwort:")
-                    print(responseString)
+                    //print(responseString)
                 }
             }
         }.resume() // Starte die Anfrage
