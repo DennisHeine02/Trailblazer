@@ -89,6 +89,9 @@ struct ViewProfile: View {
     @State private var showChangePwView = false
 
     @State private var ownProfilePicture: Data?
+    @State private var isImagePickerPresented = false
+    @State private var selectedImageData: Data? = nil
+    @State private var uiImage: UIImage? = nil
 
     @State private var refreshTrigger = false
     
@@ -102,28 +105,47 @@ struct ViewProfile: View {
                 
                 if let ownProfilePicture = ownProfilePicture,
                    let uiImage = UIImage(data: ownProfilePicture) {
-                    Image(uiImage: uiImage)
-                        .resizable() // Make the image resizable
-                        .scaledToFill() // Scale the image to fill the circular frame
-                        .frame(width: 50, height: 50)
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(systemColor)
-                        .clipShape(Circle())
-                        .padding()
-                        .aspectRatio(contentMode: .fit)
+                    Button(action: {
+                        isImagePickerPresented = true
+                    }) {
+                        Image(uiImage: uiImage)
+                            .resizable() // Make the image resizable
+                            .scaledToFill() // Scale the image to fill the circular frame
+                            .frame(width: 50, height: 50)
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(systemColor)
+                            .clipShape(Circle())
+                            .padding()
+                            .aspectRatio(contentMode: .fit)
+                    }
+                    .sheet(isPresented: $isImagePickerPresented) {
+                        ImagePicker(image: $uiImage, imageData: $selectedImageData)
+                            .onDisappear{
+                                uploadNewProfilePicture()
+                            }
+                    }
                 } else {
-
-                    Image("ProfilePicture") // Load image from assets
-                        .resizable() // Make the image resizable
-                        .scaledToFill() // Scale the image to fill the circular frame
-                        .frame(width: 50, height: 50)
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(systemColor)
-                        .clipShape(Circle())
-                        .padding()
-                        .aspectRatio(contentMode: .fit)
+                    Button(action: {
+                        isImagePickerPresented = true
+                    }) {
+                        Image("ProfilePicture") // Load image from assets
+                            .resizable() // Make the image resizable
+                            .scaledToFill() // Scale the image to fill the circular frame
+                            .frame(width: 50, height: 50)
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(systemColor)
+                            .clipShape(Circle())
+                            .padding()
+                            .aspectRatio(contentMode: .fit)
+                    }
+                    .sheet(isPresented: $isImagePickerPresented) {
+                        ImagePicker(image: $uiImage, imageData: $selectedImageData)
+                            .onDisappear{
+                                uploadNewProfilePicture()
+                            }
+                    }
                 }
 
                 
@@ -859,6 +881,52 @@ struct ViewProfile: View {
         }.resume() // Starten Sie die Anfrage
     }
     
+    func uploadNewProfilePicture() {
+        print("Sending pic...")
+        
+        guard let imageData = selectedImageData else { return }
+        
+        var urlComponents = URLComponents(string: "http://195.201.42.22:8080/api/v1/files/upload")
+        urlComponents?.queryItems = [
+            URLQueryItem(name: "type", value: "png"),
+            URLQueryItem(name: "name", value: "profilePicture1.png"),
+            URLQueryItem(name: "size", value: NSCoder.string(for: uiImage!.size)),
+            URLQueryItem(name: "isProfilePicture", value: "true")
+        ]
+        
+        guard let url = urlComponents?.url else {
+            print("Ungültige URL")
+            return
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+
+        let authToken = "Bearer " + authentification.auth_token
+        request.setValue(authToken, forHTTPHeaderField: "Authorization")
+        
+        let boundary = UUID().uuidString
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+
+        var body = Data()
+        body.append("--\(boundary)\r\n")
+        body.append("Content-Disposition: form-data; name=\"file\"; filename=\"profilePicture1.png\"\r\n")
+        body.append("Content-Type: image/png\r\n\r\n")
+        body.append(imageData)
+        body.append("\r\n")
+        body.append("--\(boundary)--\r\n")
+
+        request.httpBody = body
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Upload error: \(error)")
+                return
+            }
+            print("Upload successful")
+        }
+        task.resume()
+    }
+    
     func getNewToken() {
         print("Getting new Token...")
         let urlComponents = URLComponents(string: "http://195.201.42.22:8080/api/v1/auth/token/refresh")!
@@ -904,6 +972,49 @@ struct ViewProfile: View {
                 }
             }
         }.resume() // Starte die Anfrage
+    }
+}
+
+struct ImagePicker: UIViewControllerRepresentable {
+    @Binding var image: UIImage?
+    @Binding var imageData: Data?
+
+    class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+        let parent: ImagePicker
+
+        init(parent: ImagePicker) {
+            self.parent = parent
+        }
+
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            if let uiImage = info[.originalImage] as? UIImage {
+                parent.image = uiImage
+                parent.imageData = uiImage.jpegData(compressionQuality: 0.8)
+            }
+
+            picker.dismiss(animated: true)
+        }
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(parent: self)
+    }
+
+    func makeUIViewController(context: Context) -> UIImagePickerController {
+        let picker = UIImagePickerController()
+        picker.delegate = context.coordinator
+        picker.sourceType = .photoLibrary
+        return picker
+    }
+
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+}
+
+extension Data {
+    mutating func append(_ string: String) {
+        if let data = string.data(using: .utf8) {
+            append(data)
+        }
     }
 }
 

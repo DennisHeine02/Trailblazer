@@ -377,7 +377,8 @@
 				INFOPLIST_FILE = Trailblazer/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Need Location to show on Map";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Es wird Zugriff auf die Position zur Kartendarstellung benötigt";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Es wird Zugriff auf die Galerie benötigt";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -409,7 +410,8 @@
 				INFOPLIST_FILE = Trailblazer/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Need Location to show on Map";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Es wird Zugriff auf die Position zur Kartendarstellung benötigt";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Es wird Zugriff auf die Galerie benötigt";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
