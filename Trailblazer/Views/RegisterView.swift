@@ -24,9 +24,10 @@ struct RegisterView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 100, height: 100)
+                .cornerRadius(20)
                 .padding(.bottom, 50)
             
-            Text("Register")
+            Text("Registrierung")
             
             HStack{
                 TextField("Vorname", text: $firstname)
@@ -43,7 +44,7 @@ struct RegisterView: View {
                 .autocapitalization(.none)
                 .padding()
             
-            TextField("Benutername", text: $username)
+            TextField("Benutzername", text: $username)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .autocapitalization(.none)
                 .padding()

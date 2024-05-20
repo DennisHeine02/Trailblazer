@@ -40,7 +40,7 @@ struct ViewSettings: View {
             }
             HStack(alignment: .center){
                 
-                Text("Map Style")
+                Text("Kartenstil")
                     .padding(.bottom, 530.0)
                 
                 Form {

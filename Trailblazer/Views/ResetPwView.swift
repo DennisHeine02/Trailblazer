@@ -25,6 +25,7 @@ struct ResetPwView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 100, height: 100)
+                .cornerRadius(20)
                 .padding(.bottom, 50)
             
             Text("Passwort zurücksetzen")

@@ -20,7 +20,7 @@ struct ViewMapNew: View {
     @State private var isShowingLogin = false
     @ObservedObject var mapTypeSettings: MapTypeSettings
     @ObservedObject var authentification: AuthentificationToken
-
+    
     @State var holes: [MKPolygon] = []
     @State private var dePercent: CGFloat = 0
     
@@ -90,21 +90,31 @@ struct ViewMapNew: View {
             }
             
             if let data = data {
-                if let responseString = String(data: data, encoding: .utf8) {
-                    print("AntwortStatus:")
-                    print(responseString)
-                    
-                    if let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Double],
-                       let DE = jsonResponse["DE"]{
+                do {
+                    if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
+                        var deValue: Double?
                         
+                        for item in jsonResponse {
+                            if let kuerzel = item["kuerzel"] as? String,
+                               let percentage = item["percentage"] as? Double,
+                               kuerzel == "DE" {
+                                deValue = percentage.rounded(toPlaces: 3)
+                                break
+                            }
+                        }
                         
                         DispatchQueue.main.async {
-                            self.dePercent = CGFloat(DE.rounded(toPlaces: 3))
-                            print("hello")
+                            if let deValue = deValue {
+                                self.dePercent = CGFloat(deValue)
+                            } else {
+                                print("Wert für DE nicht gefunden")
+                            }
                         }
                     } else {
                         print("Fehler beim Parsen der JSON-Daten")
                     }
+                } catch {
+                    print("Fehler beim Parsen der JSON-Daten: \(error)")
                 }
             }
         }.resume()

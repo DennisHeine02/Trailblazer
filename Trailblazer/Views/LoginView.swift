@@ -25,6 +25,7 @@ struct LoginView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 100, height: 100)
+                .cornerRadius(20)
                 .padding(.bottom, 50)
             
             Text("Login")
@@ -34,7 +35,7 @@ struct LoginView: View {
                 .autocapitalization(.none)
                 .padding()
             
-            SecureField("Password", text: $password)
+            SecureField("Passwort", text: $password)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
             
@@ -57,7 +58,7 @@ struct LoginView: View {
                 }
             }
             
-            Button("Log In"){
+            Button("anmelden"){
                 login()
             }
             .font(.title2)

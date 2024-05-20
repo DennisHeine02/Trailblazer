@@ -181,7 +181,7 @@ struct ViewProfile: View {
                 Button(action: {
                     logout()
                 }) {
-                    Text("Logout")
+                    Text("abmelden")
                         .frame(maxWidth: .infinity, maxHeight: 30)
                         .padding()
                         .background(systemColor)
@@ -304,7 +304,7 @@ struct ViewProfile: View {
                 
                 HStack {
                     
-                    TextField("Add Name", text: $nameToAdd)
+                    TextField("Freund hinzufügen", text: $nameToAdd)
                         .autocorrectionDisabled()
                         .padding(.bottom, 20) // Add padding to the bottom of the text
                         .padding(.leading, 10) // Add padding to the left of the text

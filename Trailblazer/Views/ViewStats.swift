@@ -9,7 +9,6 @@ import SwiftUI
 
 // Erweiterung für Double zum Runden auf n Nachkommastellen
 extension Double {
-    
     func rounded(toPlaces places: Int) -> Double {
         let divisor = pow(10.0, Double(places))
         return (self * divisor).rounded() / divisor
@@ -78,7 +77,7 @@ struct ShowStatsView: View {
                 
                 
                 HStack {
-                    ProgressBar(width: 200, height: 25, percent: dePercent, color1: Color(.red), color2: Color(.orange))
+                    ProgressBar(width: 170, height: 25, percent: dePercent, color1: Color(.red), color2: Color(.orange))
                     
                     Text("\(dePercent.toStringWithDecimalPlaces(3))%")
                         .font(.system(size: 30, weight: .bold))
@@ -149,55 +148,50 @@ struct ShowStatsView: View {
             }
             
             if let data = data {
-                if let responseString = String(data: data, encoding: .utf8) {
-                    print("AntwortStatus:")
-                    print(responseString)
-                    
-                    if let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Double],
-                       let BB = jsonResponse["BB"],
-                       let HH = jsonResponse["HH"],
-                       let DE = jsonResponse["DE"],
-                       let ST = jsonResponse["ST"],
-                       let BE = jsonResponse["BE"],
-                       let MV = jsonResponse["MV"],
-                       let NW = jsonResponse["NW"],
-                       let TH = jsonResponse["TH"],
-                       let BW = jsonResponse["BW"],
-                       let SH = jsonResponse["SH"],
-                       let BY = jsonResponse["BY"],
-                       let SL = jsonResponse["SL"],
-                       let HB = jsonResponse["HB"],
-                       let NI = jsonResponse["NI"],
-                       let SN = jsonResponse["SN"],
-                       let HE = jsonResponse["HE"],
-                       let RP = jsonResponse["RP"] {
+                do {
+                    if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
+                        var updatedStats: [(String, Double)] = []
                         
-                        let updatedStats: [(String, Double)] = [
-                            ("Brandenburg", BB.rounded(toPlaces: 3)),
-                            ("Hamburg", HH.rounded(toPlaces: 3)),
-                            ("Sachsen-Anhalt", ST.rounded(toPlaces: 3)),
-                            ("Berlin", BE.rounded(toPlaces: 3)),
-                            ("Mecklenburg-Vorpommern", MV.rounded(toPlaces: 3)),
-                            ("Nordrhein-Westfalen", NW.rounded(toPlaces: 3)),
-                            ("Thüringen", TH.rounded(toPlaces: 3)),
-                            ("Baden-Württemberg", BW.rounded(toPlaces: 3)),
-                            ("Schleswig-Holstein", SH.rounded(toPlaces: 3)),
-                            ("Bayern", BY.rounded(toPlaces: 3)),
-                            ("Saarland", SL.rounded(toPlaces: 3)),
-                            ("Bremen", HB.rounded(toPlaces: 3)),
-                            ("Niedersachsen", NI.rounded(toPlaces: 3)),
-                            ("Sachsen", SN.rounded(toPlaces: 3)),
-                            ("Hessen", HE.rounded(toPlaces: 3)),
-                            ("Rheinland-Pfalz", RP.rounded(toPlaces: 3))
+                        let bundeslandNamen = [
+                            "BB": "Brandenburg",
+                            "HH": "Hamburg",
+                            "DE": "Deutschland",
+                            "ST": "Sachsen-Anhalt",
+                            "BE": "Berlin",
+                            "MV": "Mecklenburg-Vorpommern",
+                            "NW": "Nordrhein-Westfalen",
+                            "TH": "Thüringen",
+                            "BW": "Baden-Württemberg",
+                            "SH": "Schleswig-Holstein",
+                            "BY": "Bayern",
+                            "SL": "Saarland",
+                            "HB": "Bremen",
+                            "NI": "Niedersachsen",
+                            "SN": "Sachsen",
+                            "HE": "Hessen",
+                            "RP": "Rheinland-Pfalz"
                         ]
+                        
+                        for item in jsonResponse {
+                            if let kuerzel = item["kuerzel"] as? String,
+                               let percentage = item["percentage"] as? Double,
+                               let name = bundeslandNamen[kuerzel] {
+                                let roundedPercentage = percentage.rounded(toPlaces: 3)
+                                updatedStats.append((name, roundedPercentage))
+                            }
+                        }
                         
                         DispatchQueue.main.async {
                             self.bundeslandStats = updatedStats
-                            self.dePercent = CGFloat(DE.rounded(toPlaces: 3))
+                            if let dePercentage = updatedStats.first(where: { $0.0 == "Deutschland" })?.1 {
+                                self.dePercent = CGFloat(dePercentage)
+                            }
                         }
                     } else {
                         print("Fehler beim Parsen der JSON-Daten")
                     }
+                } catch {
+                    print("Fehler beim Parsen der JSON-Daten: \(error)")
                 }
             }
         }.resume()
