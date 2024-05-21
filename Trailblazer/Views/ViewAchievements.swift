@@ -26,24 +26,30 @@ struct ViewAchievements: View {
     @ObservedObject var authentification: AuthentificationToken
     
     var body: some View {
-        HStack {
-            List(achievementsList.indices, id: \.self) { index in
-                HStack{
-                    VStack(alignment: .leading){
-                        Text(achievementsList[index].title)
-                            .font(.headline)
-                        Text(achievementsList[index].description)
+        VStack{
+            Text("Erfolge")
+                .font(.title)
+                .padding(.bottom, 10)
+            Divider()
+            HStack {
+                List(achievementsList.indices, id: \.self) { index in
+                    HStack{
+                        VStack(alignment: .leading){
+                            Text(achievementsList[index].title)
+                                .font(.headline)
+                            Text(achievementsList[index].description)
+                        }
+                        Spacer()
+                        if (achievementsList[index].achieved){
+                            Image(systemName: "checkmark")
+                                .frame(width: 30, height: 30)
+                        } else {
+                            Image(systemName: "xmark")
+                                .frame(width: 30, height: 30)
+                        }
                     }
-                    Spacer()
-                    if (achievementsList[index].achieved){
-                        Image(systemName: "checkmark")
-                            .frame(width: 30, height: 30)
-                    } else {
-                        Image(systemName: "xmark")
-                            .frame(width: 30, height: 30)
-                    }
+                    
                 }
-                
             }
         }
         .onAppear{

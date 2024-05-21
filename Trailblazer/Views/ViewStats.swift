@@ -31,7 +31,7 @@ struct ViewStats: View {
     
     var body: some View {
         VStack {
-            Text("Stats")
+            Text("Statistik")
                 .font(.title)
                 .padding(.bottom, 10)
             
