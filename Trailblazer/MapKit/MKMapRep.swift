@@ -19,11 +19,24 @@ struct MKMapRep: UIViewRepresentable {
     var timer: Timer?
     
     let germany = [
-        CLLocationCoordinate2D(latitude: 55.0846, longitude: 5.86633),
-        CLLocationCoordinate2D(latitude: 55.0846, longitude: 15.04193),
-        CLLocationCoordinate2D(latitude: 47.270111, longitude: 15.04193),
-        CLLocationCoordinate2D(latitude: 47.270111, longitude: 5.86633)
+        CLLocationCoordinate2D(latitude: 90.0000, longitude: -11.0000),
+        CLLocationCoordinate2D(latitude: 90.0000, longitude: 169.0000),
+        CLLocationCoordinate2D(latitude: -90.0000, longitude: 169.0000),
+        CLLocationCoordinate2D(latitude: -90.0000, longitude: -11.0000)
     ]
+    /*
+     let germany = [
+         CLLocationCoordinate2D(latitude: 55.0846, longitude: 5.86633),
+         CLLocationCoordinate2D(latitude: 55.0846, longitude: 15.04193),
+         CLLocationCoordinate2D(latitude: 47.270111, longitude: 15.04193),
+         CLLocationCoordinate2D(latitude: 47.270111, longitude: 5.86633)
+     
+        CLLocationCoordinate2D(latitude: 90.0000, longitude: -11.0000),
+        CLLocationCoordinate2D(latitude: 90.0000, longitude: 169.0000),
+        CLLocationCoordinate2D(latitude: -90.0000, longitude: 169.0000),
+        CLLocationCoordinate2D(latitude: -90.0000, longitude: -11.0000)
+     ]
+     */
     
     
     func makeUIView(context: Context) -> MKMapView {

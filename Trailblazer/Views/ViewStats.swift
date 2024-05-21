@@ -155,7 +155,6 @@ struct ShowStatsView: View {
                         let bundeslandNamen = [
                             "BB": "Brandenburg",
                             "HH": "Hamburg",
-                            "DE": "Deutschland",
                             "ST": "Sachsen-Anhalt",
                             "BE": "Berlin",
                             "MV": "Mecklenburg-Vorpommern",
