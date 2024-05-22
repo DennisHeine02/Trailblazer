@@ -151,6 +151,7 @@ struct ShowStatsView: View {
                 do {
                     if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
                         var updatedStats: [(String, Double)] = []
+                        var dePercentage: Double?
                         
                         let bundeslandNamen = [
                             "BB": "Brandenburg",
@@ -173,17 +174,20 @@ struct ShowStatsView: View {
                         
                         for item in jsonResponse {
                             if let kuerzel = item["kuerzel"] as? String,
-                               let percentage = item["percentage"] as? Double,
-                               let name = bundeslandNamen[kuerzel] {
-                                let roundedPercentage = percentage.rounded(toPlaces: 3)
-                                updatedStats.append((name, roundedPercentage))
+                               let percentage = item["percentage"] as? Double {
+                                if kuerzel == "DE" {
+                                    dePercentage = percentage
+                                } else if let name = bundeslandNamen[kuerzel] {
+                                    let roundedPercentage = percentage.rounded(toPlaces: 3)
+                                    updatedStats.append((name, roundedPercentage))
+                                }
                             }
                         }
                         
                         DispatchQueue.main.async {
                             self.bundeslandStats = updatedStats
-                            if let dePercentage = updatedStats.first(where: { $0.0 == "Deutschland" })?.1 {
-                                self.dePercent = CGFloat(dePercentage)
+                            if let dePercentage = dePercentage {
+                                self.dePercent = CGFloat(dePercentage.rounded(toPlaces: 3))
                             }
                         }
                     } else {

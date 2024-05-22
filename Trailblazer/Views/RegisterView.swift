@@ -59,6 +59,12 @@ struct RegisterView: View {
             
             Button("Registrieren"){
                 register()
+                firstname = ""
+                lastname = ""
+                email = ""
+                username = ""
+                password1 = ""
+                password2 = ""
             }
             .font(.title2)
             .padding()
