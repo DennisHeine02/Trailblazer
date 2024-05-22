@@ -248,6 +248,7 @@ struct ViewProfile: View {
                         }
                         
                         if case .invite(let invite) = item {
+                            Spacer()
                             Button(action: {
                                 acceptDenyFriend(accept: true, withID: invite.id)
                             }) {
@@ -276,6 +277,7 @@ struct ViewProfile: View {
                             }
                             .padding(.leading, 5)
                         } else if case .friend(let friend) = item {
+                            Spacer()
                             Button(action: {
                                 deleteFriend(withID: friend.id)
                                 getFriends()

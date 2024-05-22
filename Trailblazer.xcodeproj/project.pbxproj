@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0A1611022BF6AE18001EBC04 /* ViewAchievements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1611012BF6AE18001EBC04 /* ViewAchievements.swift */; };
-		0A9150CE2BF4C79B00554D37 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9150CD2BF4C79B00554D37 /* AuthManager.swift */; };
 		0AF7CF582BDC1375004A60D0 /* AuthentificationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF7CF572BDC1375004A60D0 /* AuthentificationToken.swift */; };
 		CD04FCBB2BBEC1B200041725 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04FCBA2BBEC1B200041725 /* LoginView.swift */; };
 		CD04FCC02BBF528D00041725 /* ViewStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04FCBF2BBF528D00041725 /* ViewStats.swift */; };
@@ -34,7 +33,6 @@
 
 /* Begin PBXFileReference section */
 		0A1611012BF6AE18001EBC04 /* ViewAchievements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ViewAchievements.swift; path = ../../../Trailblazer/Trailblazer/Views/ViewAchievements.swift; sourceTree = "<group>"; };
-		0A9150CD2BF4C79B00554D37 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		0AF7CF572BDC1375004A60D0 /* AuthentificationToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthentificationToken.swift; sourceTree = "<group>"; };
 		CD04FCBA2BBEC1B200041725 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		CD04FCBF2BBF528D00041725 /* ViewStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewStats.swift; sourceTree = "<group>"; };
@@ -135,7 +133,6 @@
 				CD8530DC2BD7D67F00FCE522 /* ProgressBar.swift */,
 				CD8760862BD92AC600F51B31 /* MapTypeSettings.swift */,
 				0AF7CF572BDC1375004A60D0 /* AuthentificationToken.swift */,
-				0A9150CD2BF4C79B00554D37 /* AuthManager.swift */,
 			);
 			path = Trailblazer;
 			sourceTree = "<group>";
@@ -228,7 +225,6 @@
 				CD51D4902BDFDCA60007991C /* ResetPwView.swift in Sources */,
 				CD04FCBB2BBEC1B200041725 /* LoginView.swift in Sources */,
 				CD04FCC02BBF528D00041725 /* ViewStats.swift in Sources */,
-				0A9150CE2BF4C79B00554D37 /* AuthManager.swift in Sources */,
 				CD04FCCB2BCEB1DD00041725 /* MapViewModel.swift in Sources */,
 				CD04FCC92BCEB18900041725 /* MKMapRep.swift in Sources */,
 				CD04FCC62BBFE4DE00041725 /* Präsentation.swift in Sources */,
@@ -372,6 +368,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Trailblazer/trash/Preview Content\"";
+				DEVELOPMENT_TEAM = D66TPQT35A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Trailblazer/Info.plist;
@@ -405,6 +402,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Trailblazer/trash/Preview Content\"";
+				DEVELOPMENT_TEAM = D66TPQT35A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Trailblazer/Info.plist;
