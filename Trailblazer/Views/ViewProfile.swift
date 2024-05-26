@@ -38,6 +38,15 @@ enum UserItem: Identifiable {
         }
     }
     
+    var germanyPercentage: Double {
+        switch self {
+        case .friend(let friend):
+            return friend.germanyPercentage
+        case .invite(_):
+            return 0
+        }
+    }
+    
     var picture: Data? {
             // Implement the getter to return the picture value
             get {
@@ -66,11 +75,12 @@ struct Friend: Codable, Identifiable {
     var username: String?
     var picture : Data?
     var acceptedAt: String
-    var stats: Double
+    var germanyPercentage: Double
     
     var id: String { uuid }
     var mail: String { email }
     var nickname: String? { username }
+    var stats: Double { germanyPercentage }
     var pic: Data? { picture }
 }
 
@@ -80,6 +90,7 @@ struct Invites: Codable, Identifiable {
     var username: String?
     var sendAt: String
     var picture: Data?
+    var germanyPercentage: Double?
     
     var id: String { uuid }
     var mail: String { email }
@@ -246,15 +257,21 @@ struct ViewProfile: View {
                         }
                         
                         VStack(alignment: .leading) {
-                            Text("\(item.username)")
-                                .font(.headline)
+                            if(item.username == nil){
+                                Text("")
+                                    .font(.headline)
+                            } else {
+                                Text("\(item.username!)")
+                                    .font(.headline)
+                            }
+                            
                             Text("\(item.email)")
                                 .font(.subheadline)
                             
                             if case .friend(let friend) = item {
                                 HStack {
                                     ProgressBar(width: 150, height: 15, percent: CGFloat(friend.stats), color1: Color(.red), color2: Color(.orange))
-                                    Text("\(Int(friend.stats))%")
+                                    Text("\(Int(friend.germanyPercentage))%")
                                         .font(.system(size: 10, weight: .bold))
                                 }
                             }
@@ -518,6 +535,11 @@ struct ViewProfile: View {
             
             // Überprüfe den Inhalt der Antwort
             if let data = data {
+                if let responseString = String(data: data, encoding: .utf8) {
+                    print("Antwort:")
+                    print(responseString)
+                }
+                
                 // Konvertiere die Daten in eine Liste von Freunden
                 do {
                     let friends = try JSONDecoder().decode([Friend].self, from: data)
@@ -937,7 +959,20 @@ struct ViewProfile: View {
                 print("Upload error: \(error)")
                 return
             }
-            print("Upload successful")
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("ungültige Antwort")
+                return
+            }
+            
+            print("Statuscode: \(httpResponse.statusCode)")
+            
+            if let data = data {
+                if let responseString = String(data: data, encoding: .utf8) {
+                    print("Antwort:")
+                    print(responseString)
+                }
+            }
         }
         task.resume()
     }
