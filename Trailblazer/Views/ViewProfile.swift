@@ -29,6 +29,15 @@ enum UserItem: Identifiable {
         }
     }
     
+    var username: String? {
+        switch self {
+        case .friend(let friend):
+            return friend.username
+        case .invite(let invite):
+            return invite.username
+        }
+    }
+    
     var picture: Data? {
             // Implement the getter to return the picture value
             get {
@@ -54,23 +63,27 @@ enum UserItem: Identifiable {
 struct Friend: Codable, Identifiable {
     var uuid: String
     var email: String
+    var username: String?
     var picture : Data?
     var acceptedAt: String
     var stats: Double
     
     var id: String { uuid }
     var mail: String { email }
+    var nickname: String? { username }
     var pic: Data? { picture }
 }
 
 struct Invites: Codable, Identifiable {
     var uuid: String
     var email: String
+    var username: String?
     var sendAt: String
     var picture: Data?
     
     var id: String { uuid }
     var mail: String { email }
+    var nickname: String? { username }
     var pic: Data? { picture }
     
 }
@@ -233,7 +246,7 @@ struct ViewProfile: View {
                         }
                         
                         VStack(alignment: .leading) {
-                            Text(item.id)
+                            Text("\(item.username)")
                                 .font(.headline)
                             Text("\(item.email)")
                                 .font(.subheadline)
