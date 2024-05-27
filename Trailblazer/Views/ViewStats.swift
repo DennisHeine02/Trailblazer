@@ -97,7 +97,7 @@ struct ShowStatsView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
                         HStack {
-                            ProgressBar(width: 180, height: 25, percent: bundesland.1, color1: Color(.red), color2: Color(.orange))
+                            ProgressBar(width: 175, height: 25, percent: bundesland.1, color1: Color(.red), color2: Color(.orange))
                             
                             Text("\(bundesland.1.toStringWithDecimalPlaces(3))%")
                                 .font(.system(size: 15, weight: .bold))
