@@ -324,7 +324,7 @@ struct ViewProfile: View {
                             }
                             .padding(.leading, 30)
                         }
-                        Spacer()
+                        
                     }
                     .padding(.vertical, 8)
                     .onAppear{
@@ -338,6 +338,7 @@ struct ViewProfile: View {
                     
                     TextField("Freund hinzufügen", text: $nameToAdd)
                         .autocorrectionDisabled()
+                        .autocapitalization(.none)
                         .padding(.bottom, 20) // Add padding to the bottom of the text
                         .padding(.leading, 10) // Add padding to the left of the text
                     
@@ -368,7 +369,10 @@ struct ViewProfile: View {
             getFriends()
             getUser()
             getFriendInvites()
-            combinedList = inviteList.map(UserItem.invite) + friendsList.map(UserItem.friend)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                combinedList = inviteList.map(UserItem.invite) + friendsList.map(UserItem.friend)
+                print("on Appear")
+            }
         }
         
     }
@@ -418,8 +422,6 @@ struct ViewProfile: View {
                 print("Response data: \(responseString ?? "")")
             }
             self.refreshTrigger.toggle()
-            getFriends()
-            getFriendInvites()
         }.resume() // Starten Sie die Anfrage
     }
     
@@ -514,12 +516,14 @@ struct ViewProfile: View {
             // Überprüfen Sie auf Fehler
             if let error = error {
                 print("Fehler: \(error)")
+                print("Halooooooooooooooo")
                 return
             }
             
             // Überprüfen Sie die Antwort
             guard let httpResponse = response as? HTTPURLResponse else {
                 print("Ungültige Antwort")
+                print("Halooooooooooooooo")
                 return
             }
             
@@ -542,6 +546,7 @@ struct ViewProfile: View {
                 
                 // Konvertiere die Daten in eine Liste von Freunden
                 do {
+                    self.friendsList = []
                     let friends = try JSONDecoder().decode([Friend].self, from: data)
                     self.friendsList = friends
                     print(friends)
@@ -577,12 +582,14 @@ struct ViewProfile: View {
             // Überprüfen Sie auf Fehler
             if let error = error {
                 print("Fehler: \(error)")
+                print("afffeeee")
                 return
             }
             
             // Überprüfen Sie die Antwort
             guard let httpResponse = response as? HTTPURLResponse else {
                 print("Ungültige Antwort")
+                print("afffeeee")
                 return
             }
             
@@ -600,6 +607,7 @@ struct ViewProfile: View {
             if let data = data {
                 // Konvertiere die Daten in eine Liste von Freunden
                 do {
+                    self.inviteList = []
                     let invites = try JSONDecoder().decode([Invites].self, from: data)
                     self.inviteList = invites
                 } catch {
@@ -672,8 +680,6 @@ struct ViewProfile: View {
                     print(responseString)
                 }
             }
-            getFriends()
-            getFriendInvites()
             self.refreshTrigger.toggle()
         }.resume() // Starte die Anfrage
     }
