@@ -133,15 +133,12 @@ struct ViewProfile: View {
                         isImagePickerPresented = true
                     }) {
                         Image(uiImage: uiImage)
-                            .resizable() // Make the image resizable
+                            .resizable()
                             .scaledToFill() // Scale the image to fill the circular frame
-                            .frame(width: 50, height: 50)
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(systemColor)
-                            .clipShape(Circle())
-                            .padding()
-                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 70, height: 70)
+                            .clipShape(Circle()) // Clip to circular shape
+                            .padding(.leading, 30)
+                            .padding(.bottom, 10)
                     }
                     .sheet(isPresented: $isImagePickerPresented) {
                         ImagePicker(image: $uiImage, imageData: $selectedImageData)
@@ -154,15 +151,12 @@ struct ViewProfile: View {
                         isImagePickerPresented = true
                     }) {
                         Image("ProfilePicture") // Load image from assets
-                            .resizable() // Make the image resizable
+                            .resizable()
                             .scaledToFill() // Scale the image to fill the circular frame
-                            .frame(width: 50, height: 50)
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(systemColor)
-                            .clipShape(Circle())
-                            .padding()
-                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 70, height: 70)
+                            .clipShape(Circle()) // Clip to circular shape
+                            .padding(.leading, 30)
+                            .padding(.bottom, 10)
                     }
                     .sheet(isPresented: $isImagePickerPresented) {
                         ImagePicker(image: $uiImage, imageData: $selectedImageData)
@@ -918,6 +912,8 @@ struct ViewProfile: View {
                     if let index = combinedList.firstIndex(where: { $0.id == uuid }) {
                         var item = combinedList[index]
                         item.picture = data
+                        print(data)
+                        print(item)
                         combinedList[index] = item
                     }
                 }
