@@ -48,25 +48,25 @@ enum UserItem: Identifiable {
     }
     
     var picture: Data? {
-            // Implement the getter to return the picture value
-            get {
-                switch self {
-                case .friend(let friend):
-                    return friend.picture
-                case .invite(let invite):
-                    return invite.picture
-                }
-            }
-            // Implement the setter to set the picture value
-            set {
-                switch self {
-                case .friend(var friend):
-                    friend.picture = newValue
-                case .invite(var invite):
-                    invite.picture = newValue
-                }
+        // Implement the getter to return the picture value
+        get {
+            switch self {
+            case .friend(let friend):
+                return friend.picture
+            case .invite(let invite):
+                return invite.picture
             }
         }
+        // Implement the setter to set the picture value
+        set {
+            switch self {
+            case .friend(var friend):
+                friend.picture = newValue
+            case .invite(var invite):
+                invite.picture = newValue
+            }
+        }
+    }
 }
 
 struct Friend: Codable, Identifiable {
@@ -111,12 +111,12 @@ struct ViewProfile: View {
     @State var inviteList: [Invites] = []
     @State private var showLoginView = false
     @State private var showChangePwView = false
-
+    
     @State private var ownProfilePicture: Data?
     @State private var isImagePickerPresented = false
     @State private var selectedImageData: Data? = nil
     @State private var uiImage: UIImage? = nil
-
+    
     @State private var refreshTrigger = false
     
     @State private var combinedList: [UserItem] = []
@@ -171,7 +171,7 @@ struct ViewProfile: View {
                             }
                     }
                 }
-
+                
                 
                 VStack(alignment: .leading) {
                     Text(self.username)
@@ -241,19 +241,19 @@ struct ViewProfile: View {
                 List(combinedList) { item in
                     HStack {
                         if let profilePicture = item.picture,
-                               let uiImage = UIImage(data: profilePicture) {
-                                Image(uiImage: uiImage)
+                           let uiImage = UIImage(data: profilePicture) {
+                            Image(uiImage: uiImage)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 30, height: 30)
                                 .clipShape(Circle())
-                               }
+                        }
                         else{
-                           Image(systemName: "person.circle.fill")
-                                  .resizable()
-                                  .aspectRatio(contentMode: .fit)
-                                  .frame(width: 30, height: 30)
-                                  .clipShape(Circle())
+                            Image(systemName: "person.circle.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 30, height: 30)
+                                .clipShape(Circle())
                         }
                         
                         VStack(alignment: .leading) {
@@ -270,8 +270,8 @@ struct ViewProfile: View {
                             
                             if case .friend(let friend) = item {
                                 HStack {
-                                    ProgressBar(width: 150, height: 15, percent: CGFloat(friend.stats), color1: Color(.red), color2: Color(.orange))
-                                    Text("\(Int(friend.germanyPercentage))%")
+                                    ProgressBar(width: 140, height: 15, percent: CGFloat(friend.stats), color1: Color(.red), color2: Color(.orange))
+                                    Text("\(toStringWithDecimalPlaces(value: Double(Int(friend.germanyPercentage)), 3))%")
                                         .font(.system(size: 10, weight: .bold))
                                 }
                             }
@@ -328,7 +328,7 @@ struct ViewProfile: View {
                     }
                     .padding(.vertical, 8)
                     .onAppear{
-                      loadProfilePictureByUUID(uuid: item.id)
+                        loadProfilePictureByUUID(uuid: item.id)
                     }
                 }
                 
@@ -372,6 +372,7 @@ struct ViewProfile: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 combinedList = inviteList.map(UserItem.invite) + friendsList.map(UserItem.friend)
                 print("on Appear")
+                print(combinedList)
             }
         }
         
@@ -914,8 +915,10 @@ struct ViewProfile: View {
             if let data = data {
                 // Konvertiere die Daten in einen lesbaren String
                 DispatchQueue.main.async {
-                    if let index = self.combinedList.firstIndex(where: {$0.id == uuid}){
-                        self.combinedList[index].picture = data
+                    if let index = combinedList.firstIndex(where: { $0.id == uuid }) {
+                        var item = combinedList[index]
+                        item.picture = data
+                        combinedList[index] = item
                     }
                 }
             } else {
@@ -923,6 +926,8 @@ struct ViewProfile: View {
             }
         }.resume() // Starten Sie die Anfrage
     }
+    
+    
     
     func uploadNewProfilePicture() {
         print("Sending pic...")
@@ -943,13 +948,13 @@ struct ViewProfile: View {
         }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-
+        
         let authToken = "Bearer " + authentification.auth_token
         request.setValue(authToken, forHTTPHeaderField: "Authorization")
         
         let boundary = UUID().uuidString
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-
+        
         var body = Data()
         body.append("--\(boundary)\r\n")
         body.append("Content-Disposition: form-data; name=\"file\"; filename=\"profilePicture1.png\"\r\n")
@@ -957,9 +962,9 @@ struct ViewProfile: View {
         body.append(imageData)
         body.append("\r\n")
         body.append("--\(boundary)--\r\n")
-
+        
         request.httpBody = body
-
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Upload error: \(error)")
@@ -1029,40 +1034,49 @@ struct ViewProfile: View {
             }
         }.resume() // Starte die Anfrage
     }
+    
+    func rounded(value: Double, toPlaces places: Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (value * divisor).rounded() / divisor
+    }
+    
+    func toStringWithDecimalPlaces(value: Double, _ places: Int) -> String {
+        return String(format: "%.\(places)f", value)
+    }
 }
 
 struct ImagePicker: UIViewControllerRepresentable {
     @Binding var image: UIImage?
     @Binding var imageData: Data?
-
+    
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
         let parent: ImagePicker
-
+        
         init(parent: ImagePicker) {
             self.parent = parent
         }
-
+        
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             if let uiImage = info[.originalImage] as? UIImage {
                 parent.image = uiImage
                 parent.imageData = uiImage.jpegData(compressionQuality: 0.8)
             }
-
+            
             picker.dismiss(animated: true)
         }
     }
-
+    
     func makeCoordinator() -> Coordinator {
         Coordinator(parent: self)
     }
-
+    
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()
         picker.delegate = context.coordinator
         picker.sourceType = .photoLibrary
         return picker
     }
-
+    
     func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
 }
 
